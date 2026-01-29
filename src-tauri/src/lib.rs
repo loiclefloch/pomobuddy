@@ -5,7 +5,9 @@ mod notifications;
 mod state;
 mod tray;
 
+use commands::app;
 use commands::timer;
+use commands::stats;
 use state::TimerStateWrapper;
 
 #[tauri::command]
@@ -32,6 +34,8 @@ pub fn run() {
             timer::resume_timer,
             timer::stop_timer,
             timer::get_timer_state,
+            stats::get_quick_stats,
+            app::quit_app,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

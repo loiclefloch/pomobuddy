@@ -1,6 +1,6 @@
 # Story 2.4: Enable Start/Stop Session from Tray Menu
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -48,44 +48,44 @@ So that I don't need to open the main window for basic timer control.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create ActionButton Component (AC: #1, #2, #4)
-  - [ ] 1.1: Create `src/features/timer/components/ActionButton.tsx`
-  - [ ] 1.2: Use shadcn/ui Button component as base
-  - [ ] 1.3: Accept `status` prop to determine button state
-  - [ ] 1.4: Style with cozy accent color for primary state
-  - [ ] 1.5: Add Lucide icons (Play, Square for stop)
-  - [ ] 1.6: Full width styling within tray menu
+- [x] Task 1: Create ActionButton Component (AC: #1, #2, #4)
+  - [x] 1.1: Create `src/features/timer/components/ActionButton.tsx`
+  - [x] 1.2: Use shadcn/ui Button component as base
+  - [x] 1.3: Accept `status` prop to determine button state
+  - [x] 1.4: Style with cozy accent color for primary state
+  - [x] 1.5: Add Lucide icons (Play, Square for stop)
+  - [x] 1.6: Full width styling within tray menu
 
-- [ ] Task 2: Implement Button State Logic (AC: #2, #4, #6)
-  - [ ] 2.1: When `status === 'idle'`: Show "Start Session" + Play icon
-  - [ ] 2.2: When `status === 'focus' || 'break'`: Show "Stop" + Square icon
-  - [ ] 2.3: When `status === 'paused'`: Show "Resume" + Play icon
-  - [ ] 2.4: Use CVA variants for different button states
+- [x] Task 2: Implement Button State Logic (AC: #2, #4, #6)
+  - [x] 2.1: When `status === 'idle'`: Show "Start Session" + Play icon
+  - [x] 2.2: When `status === 'focus' || 'break'`: Show "Stop" + Square icon
+  - [x] 2.3: When `status === 'paused'`: Show "Resume" + Play icon
+  - [x] 2.4: Use CVA variants for different button states
 
-- [ ] Task 3: Connect to Timer Commands (AC: #3, #5, #6)
-  - [ ] 3.1: Import `useTimer` hook for timer actions
-  - [ ] 3.2: Call `startTimer()` on "Start Session" click
-  - [ ] 3.3: Call `stopTimer()` on "Stop" click
-  - [ ] 3.4: Call `resumeTimer()` on "Resume" click
-  - [ ] 3.5: No confirmation dialogs (UX13 - graceful interruption)
+- [x] Task 3: Connect to Timer Commands (AC: #3, #5, #6)
+  - [x] 3.1: Import `useTimer` hook for timer actions
+  - [x] 3.2: Call `startTimer()` on "Start Session" click
+  - [x] 3.3: Call `stopTimer()` on "Stop" click
+  - [x] 3.4: Call `resumeTimer()` on "Resume" click
+  - [x] 3.5: No confirmation dialogs (UX13 - graceful interruption)
 
-- [ ] Task 4: Integrate into TrayMenu (AC: #1)
-  - [ ] 4.1: Import ActionButton into TrayMenu.tsx
-  - [ ] 4.2: Position below QuickStats section
-  - [ ] 4.3: Add appropriate spacing/margins
-  - [ ] 4.4: Connect to timer store for status
+- [x] Task 4: Integrate into TrayMenu (AC: #1)
+  - [x] 4.1: Import ActionButton into TrayMenu.tsx
+  - [x] 4.2: Position below QuickStats section
+  - [x] 4.3: Add appropriate spacing/margins
+  - [x] 4.4: Connect to timer store for status
 
-- [ ] Task 5: Visual Feedback (AC: #3, #5)
-  - [ ] 5.1: Button state updates immediately on click
-  - [ ] 5.2: TimerRing updates reflect timer state
-  - [ ] 5.3: Tray icon state change via existing Story 2.1 infrastructure
-  - [ ] 5.4: Ensure < 100ms response time (NFR3)
+- [x] Task 5: Visual Feedback (AC: #3, #5)
+  - [x] 5.1: Button state updates immediately on click
+  - [x] 5.2: TimerRing updates reflect timer state
+  - [x] 5.3: Tray icon state change via existing Story 2.1 infrastructure
+  - [x] 5.4: Ensure < 100ms response time (NFR3)
 
-- [ ] Task 6: Create Tests
-  - [ ] 6.1: Create `src/features/timer/components/ActionButton.test.tsx`
-  - [ ] 6.2: Test button text for each timer state
-  - [ ] 6.3: Test click handlers invoke correct commands
-  - [ ] 6.4: Test button styling variants
+- [x] Task 6: Create Tests
+  - [x] 6.1: Create `src/features/timer/components/ActionButton.test.tsx`
+  - [x] 6.2: Test button text for each timer state
+  - [x] 6.3: Test click handlers invoke correct commands
+  - [x] 6.4: Test button styling variants
 
 ## Dev Notes
 
@@ -181,10 +181,28 @@ const { startTimer, pauseTimer, resumeTimer, stopTimer } = useTimer();
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude (Sisyphus)
 
 ### Debug Log References
 
+None required - implementation straightforward.
+
 ### Completion Notes List
 
+- ActionButton component created with full state handling (idle/focus/break/paused)
+- Integrated into TrayMenu below QuickStats section
+- Uses shadcn/ui Button with cozy-accent styling
+- Lucide icons (Play, Square) for visual feedback
+- No confirmation dialogs per UX13 specification
+- 14 unit tests covering all states and interactions
+- All tests passing
+
 ### File List
+
+**Created:**
+- `src/features/timer/components/ActionButton.tsx` - Timer action button component
+- `src/features/timer/components/ActionButton.test.tsx` - Unit tests (14 tests)
+
+**Modified:**
+- `src/features/timer/components/index.ts` - Added ActionButton export
+- `src/windows/tray/TrayMenu.tsx` - Integrated ActionButton

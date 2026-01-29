@@ -16,6 +16,15 @@ export default defineConfig(async () => ({
       "@/windows": resolve(__dirname, "src/windows"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "src/windows/main/index.html"),
+        tray: resolve(__dirname, "src/windows/tray/index.html"),
+        settings: resolve(__dirname, "src/windows/settings/index.html"),
+      },
+    },
+  },
   server: {
     port: 1420,
     strictPort: true,

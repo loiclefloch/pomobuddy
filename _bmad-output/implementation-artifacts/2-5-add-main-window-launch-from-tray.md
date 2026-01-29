@@ -1,6 +1,6 @@
 # Story 2.5: Add Main Window Launch from Tray
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -51,52 +51,52 @@ So that I can view detailed stats and achievements when needed.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Configure Main and Settings Windows in Tauri (AC: #3, #5)
-  - [ ] 1.1: Update `tauri.conf.json` with main window config (800x600, hidden)
-  - [ ] 1.2: Update `tauri.conf.json` with settings window config (400x500, hidden)
-  - [ ] 1.3: Create `src/windows/main/index.html` entry point
-  - [ ] 1.4: Create `src/windows/main/main.tsx` React mount
-  - [ ] 1.5: Create `src/windows/main/MainWindow.tsx` placeholder component
-  - [ ] 1.6: Create `src/windows/settings/` structure similarly
-  - [ ] 1.7: Update `vite.config.ts` with main and settings entry points
+- [x] Task 1: Configure Main and Settings Windows in Tauri (AC: #3, #5)
+  - [x] 1.1: Update `tauri.conf.json` with main window config (800x600, hidden)
+  - [x] 1.2: Update `tauri.conf.json` with settings window config (400x500, hidden)
+  - [x] 1.3: Create `src/windows/main/index.html` entry point
+  - [x] 1.4: Create `src/windows/main/main.tsx` React mount
+  - [x] 1.5: Create `src/windows/main/MainWindow.tsx` placeholder component
+  - [x] 1.6: Create `src/windows/settings/` structure similarly
+  - [x] 1.7: Update `vite.config.ts` with main and settings entry points
 
-- [ ] Task 2: Create TrayMenuItems Component (AC: #1, #2)
-  - [ ] 2.1: Create `src/windows/tray/components/TrayMenuItems.tsx`
-  - [ ] 2.2: Implement menu item list with icons
-  - [ ] 2.3: Use Lucide icons: BarChart3, Trophy, Settings, X
-  - [ ] 2.4: Apply hover states with `bg-cozy-elevated`
-  - [ ] 2.5: Add separators between sections
+- [x] Task 2: Create TrayMenuItems Component (AC: #1, #2)
+  - [x] 2.1: Create `src/windows/tray/components/TrayMenuItems.tsx`
+  - [x] 2.2: Implement menu item list with icons
+  - [x] 2.3: Use Lucide icons: BarChart3, Trophy, Settings, X
+  - [x] 2.4: Apply hover states with `bg-cozy-elevated`
+  - [x] 2.5: Add separators between sections
 
-- [ ] Task 3: Implement Window Management Commands (AC: #4, #5, #6)
-  - [ ] 3.1: Create `openMainWindow()` function using Tauri window API
-  - [ ] 3.2: Create `openSettingsWindow()` function
-  - [ ] 3.3: Create `quitApp()` function with graceful shutdown
-  - [ ] 3.4: Handle "window already open" case (focus instead of create)
+- [x] Task 3: Implement Window Management Commands (AC: #4, #5, #6)
+  - [x] 3.1: Create `openMainWindow()` function using Tauri window API
+  - [x] 3.2: Create `openSettingsWindow()` function
+  - [x] 3.3: Create `quitApp()` function with graceful shutdown
+  - [x] 3.4: Handle "window already open" case (focus instead of create)
 
-- [ ] Task 4: Implement Menu Item Click Handlers (AC: #4, #5, #6)
-  - [ ] 4.1: "Stats & History" opens main window, closes tray
-  - [ ] 4.2: "Achievements" opens main window to achievements tab
-  - [ ] 4.3: "Settings" opens settings window, closes tray
-  - [ ] 4.4: "Quit" calls graceful exit
+- [x] Task 4: Implement Menu Item Click Handlers (AC: #4, #5, #6)
+  - [x] 4.1: "Stats & History" opens main window, closes tray
+  - [x] 4.2: "Achievements" opens main window to achievements tab
+  - [x] 4.3: "Settings" opens settings window, closes tray
+  - [x] 4.4: "Quit" calls graceful exit
 
-- [ ] Task 5: Integrate into TrayMenu (AC: #1)
-  - [ ] 5.1: Import TrayMenuItems into TrayMenu.tsx
-  - [ ] 5.2: Add separator after ActionButton
-  - [ ] 5.3: Position menu items at bottom of tray menu
-  - [ ] 5.4: Ensure tray menu closes after navigation
+- [x] Task 5: Integrate into TrayMenu (AC: #1)
+  - [x] 5.1: Import TrayMenuItems into TrayMenu.tsx
+  - [x] 5.2: Add separator after ActionButton
+  - [x] 5.3: Position menu items at bottom of tray menu
+  - [x] 5.4: Ensure tray menu closes after navigation
 
-- [ ] Task 6: Create Placeholder Windows (AC: #4, #5)
-  - [ ] 6.1: MainWindow.tsx with "Stats coming in Epic 3" placeholder
-  - [ ] 6.2: SettingsWindow.tsx with "Settings coming soon" placeholder
-  - [ ] 6.3: Apply cozy theme styling to both
-  - [ ] 6.4: Ensure windows can be closed back to tray
+- [x] Task 6: Create Placeholder Windows (AC: #4, #5)
+  - [x] 6.1: MainWindow.tsx with "Stats coming in Epic 3" placeholder
+  - [x] 6.2: SettingsWindow.tsx with "Settings coming soon" placeholder
+  - [x] 6.3: Apply cozy theme styling to both
+  - [x] 6.4: Ensure windows can be closed back to tray
 
-- [ ] Task 7: Testing
-  - [ ] 7.1: Test menu items render with correct icons
-  - [ ] 7.2: Test main window opens on click
-  - [ ] 7.3: Test settings window opens on click
-  - [ ] 7.4: Test quit functionality
-  - [ ] 7.5: Test tray menu closes after navigation
+- [x] Task 7: Testing
+  - [x] 7.1: Test menu items render with correct icons
+  - [x] 7.2: Test main window opens on click
+  - [x] 7.3: Test settings window opens on click
+  - [x] 7.4: Test quit functionality
+  - [x] 7.5: Test tray menu closes after navigation
 
 ## Dev Notes
 
@@ -200,10 +200,41 @@ async function closeTrayMenu() {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Configured main window (800x600, hidden by default) and settings window (400x500, hidden, centered) in tauri.conf.json
+- Added settings window entry point to vite.config.ts multi-entry build
+- Created SettingsWindow.tsx placeholder with cozy theme styling
+- Created TrayMenuItems component with Lucide icons (BarChart3, Trophy, Settings, X)
+- Created window management utilities in src/shared/utils/window.ts (openMainWindow, openSettingsWindow, hideCurrentWindow, quitApp)
+- Added quit_app Rust command in src-tauri/src/commands/app.rs
+- Updated capabilities to allow window operations from tray and settings windows
+- Integrated TrayMenuItems into TrayMenu with separator after ActionButton
+- All menu items close tray menu before opening target window
+- 7 new tests for TrayMenuItems component (153 total frontend tests pass)
+- 12 Rust tests pass
+- TypeScript compilation and build successful
+
 ### File List
+
+- src-tauri/tauri.conf.json (modified)
+- src-tauri/capabilities/default.json (modified)
+- src-tauri/src/commands/app.rs (created)
+- src-tauri/src/commands/mod.rs (modified)
+- src-tauri/src/lib.rs (modified)
+- vite.config.ts (modified)
+- src/windows/settings/index.html (created)
+- src/windows/settings/main.tsx (created)
+- src/windows/settings/SettingsWindow.tsx (created)
+- src/windows/tray/components/TrayMenuItems.tsx (created)
+- src/windows/tray/components/TrayMenuItems.test.tsx (created)
+- src/windows/tray/TrayMenu.tsx (modified)
+- src/shared/utils/window.ts (created)
+
+## Change Log
+
+- 2026-01-29: Implemented main window launch from tray - all tasks complete, status updated to review

@@ -16,7 +16,9 @@
         "label": "main",
         "title": "test-bmad",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "visible": false,
+        "url": "src/windows/main/index.html"
       },
       {
         "label": "tray",
@@ -30,7 +32,17 @@
         "skipTaskbar": true,
         "focus": false,
         "transparent": false,
-        "center": false
+        "center": false,
+        "url": "src/windows/tray/index.html"
+      },
+      {
+        "label": "settings",
+        "title": "Settings",
+        "width": 400,
+        "height": 500,
+        "visible": false,
+        "center": true,
+        "url": "src/windows/settings/index.html"
       }
     ],
     "security": {
