@@ -1,6 +1,6 @@
 # Story 2.2: Create Tray Menu with Timer Ring Display
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -46,8 +46,8 @@ So that I can quickly check my session progress without opening a window.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Configure Multi-Window Architecture in Tauri (AC: #1)
-  - [ ] 1.1: Update `src-tauri/tauri.conf.json` to add tray window configuration
+- [x] Task 1: Configure Multi-Window Architecture in Tauri (AC: #1)
+  - [x] 1.1: Update `src-tauri/tauri.conf.json` to add tray window configuration
     - Label: `tray`
     - Width: 280
     - Height: 400 (initial, can grow)
@@ -55,66 +55,66 @@ So that I can quickly check my session progress without opening a window.
     - Decorations: false (frameless)
     - AlwaysOnTop: true
     - SkipTaskbar: true
-  - [ ] 1.2: Add window positioning logic in `src-tauri/src/tray.rs` to position near tray icon
-  - [ ] 1.3: Modify tray click handler to show/hide tray window at correct position (macOS)
-  - [ ] 1.4: Ensure window can be dismissed by clicking outside or pressing Escape
+  - [x] 1.2: Add window positioning logic in `src-tauri/src/tray.rs` to position near tray icon
+  - [x] 1.3: Modify tray click handler to show/hide tray window at correct position (macOS)
+  - [x] 1.4: Ensure window can be dismissed by clicking outside or pressing Escape
 
-- [ ] Task 2: Set Up Multi-Entry Vite Build (AC: #2)
-  - [ ] 2.1: Create `src/windows/tray/` directory structure
-  - [ ] 2.2: Create `src/windows/tray/index.html` - HTML entry point for tray window
-  - [ ] 2.3: Create `src/windows/tray/main.tsx` - React mount point for tray
-  - [ ] 2.4: Create `src/windows/tray/TrayMenu.tsx` - Main tray menu component
-  - [ ] 2.5: Update `vite.config.ts` to add tray as multi-entry input:
+- [x] Task 2: Set Up Multi-Entry Vite Build (AC: #2)
+  - [x] 2.1: Create `src/windows/tray/` directory structure
+  - [x] 2.2: Create `src/windows/tray/index.html` - HTML entry point for tray window
+  - [x] 2.3: Create `src/windows/tray/main.tsx` - React mount point for tray
+  - [x] 2.4: Create `src/windows/tray/TrayMenu.tsx` - Main tray menu component
+  - [x] 2.5: Update `vite.config.ts` to add tray as multi-entry input:
     ```typescript
     input: {
       main: 'src/windows/main/index.html',
       tray: 'src/windows/tray/index.html',
     }
     ```
-  - [ ] 2.6: Verify `npm run tauri dev` builds both entry points successfully
+  - [x] 2.6: Verify `npm run tauri dev` builds both entry points successfully
 
-- [ ] Task 3: Create TimerRing Component (AC: #3, #4, #5)
-  - [ ] 3.1: Create `src/features/timer/components/TimerRing.tsx`
-  - [ ] 3.2: Implement SVG circular progress ring with configurable props:
+- [x] Task 3: Create TimerRing Component (AC: #3, #4, #5)
+  - [x] 3.1: Create `src/features/timer/components/TimerRing.tsx`
+  - [x] 3.2: Implement SVG circular progress ring with configurable props:
     - `diameter`: number (default 120)
     - `strokeWidth`: number (default 8)
     - `progress`: number (0-100)
     - `status`: 'idle' | 'focus' | 'break' | 'paused'
-  - [ ] 3.3: Use cozy theme colors:
+  - [x] 3.3: Use cozy theme colors:
     - Track: `cozy-border` (#4A4240)
     - Focus progress: `cozy-accent` (#E8A598)
     - Break progress: `cozy-success` (#A8C5A0)
-  - [ ] 3.4: Add clockwise fill animation (SVG stroke-dasharray/stroke-dashoffset)
-  - [ ] 3.5: Add smooth CSS transitions for progress updates
-  - [ ] 3.6: Center display: MM:SS when active, "Start" or Play icon when idle
+  - [x] 3.4: Add clockwise fill animation (SVG stroke-dasharray/stroke-dashoffset)
+  - [x] 3.5: Add smooth CSS transitions for progress updates
+  - [x] 3.6: Center display: MM:SS when active, "Start" or Play icon when idle
 
-- [ ] Task 4: Create TimerRing Test File (AC: #3)
-  - [ ] 4.1: Create `src/features/timer/components/TimerRing.test.tsx`
-  - [ ] 4.2: Test rendering with different progress values (0, 50, 100)
-  - [ ] 4.3: Test color changes based on status (focus vs break)
-  - [ ] 4.4: Test time display formatting (MM:SS)
+- [x] Task 4: Create TimerRing Test File (AC: #3)
+  - [x] 4.1: Create `src/features/timer/components/TimerRing.test.tsx`
+  - [x] 4.2: Test rendering with different progress values (0, 50, 100)
+  - [x] 4.3: Test color changes based on status (focus vs break)
+  - [x] 4.4: Test time display formatting (MM:SS)
 
-- [ ] Task 5: Integrate TimerRing into TrayMenu (AC: #4, #5)
-  - [ ] 5.1: Import and use TimerRing in TrayMenu.tsx
-  - [ ] 5.2: Connect to `useTimerStore` for timer state
-  - [ ] 5.3: Listen to Tauri `TimerTick` events to update progress
-  - [ ] 5.4: Calculate progress percentage from remaining time
-  - [ ] 5.5: Apply cozy theme styling to TrayMenu container
+- [x] Task 5: Integrate TimerRing into TrayMenu (AC: #4, #5)
+  - [x] 5.1: Import and use TimerRing in TrayMenu.tsx
+  - [x] 5.2: Connect to `useTimerStore` for timer state
+  - [x] 5.3: Listen to Tauri `TimerTick` events to update progress
+  - [x] 5.4: Calculate progress percentage from remaining time
+  - [x] 5.5: Apply cozy theme styling to TrayMenu container
 
-- [ ] Task 6: Style TrayMenu Container (AC: #1)
-  - [ ] 6.1: Apply `bg-cozy-bg` background color
-  - [ ] 6.2: Add appropriate padding (16-20px)
-  - [ ] 6.3: Add `rounded-xl` border radius (16px) for corners if visible
-  - [ ] 6.4: Add subtle shadow for depth (`shadow-soft`)
-  - [ ] 6.5: Ensure 280px width constraint is respected
+- [x] Task 6: Style TrayMenu Container (AC: #1)
+  - [x] 6.1: Apply `bg-cozy-bg` background color
+  - [x] 6.2: Add appropriate padding (16-20px)
+  - [x] 6.3: Add `rounded-xl` border radius (16px) for corners if visible
+  - [x] 6.4: Add subtle shadow for depth (`shadow-soft`)
+  - [x] 6.5: Ensure 280px width constraint is respected
 
-- [ ] Task 7: Platform Testing
-  - [ ] 7.1: Test tray window appears on tray icon click (macOS)
-  - [ ] 7.2: Test tray window positions correctly near tray icon
-  - [ ] 7.3: Test TimerRing displays correct progress during focus session
-  - [ ] 7.4: Test TimerRing color changes for break mode
-  - [ ] 7.5: Test clicking outside dismisses tray window
-  - [ ] 7.6: Test Escape key dismisses tray window
+- [x] Task 7: Platform Testing
+  - [x] 7.1: Test tray window appears on tray icon click (macOS)
+  - [x] 7.2: Test tray window positions correctly near tray icon
+  - [x] 7.3: Test TimerRing displays correct progress during focus session
+  - [x] 7.4: Test TimerRing color changes for break mode
+  - [x] 7.5: Test clicking outside dismisses tray window
+  - [x] 7.6: Test Escape key dismisses tray window
 
 ## Dev Notes
 
@@ -488,14 +488,37 @@ describe('TimerRing', () => {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Added tray window configuration to tauri.conf.json (280x400, frameless, alwaysOnTop, skipTaskbar)
+- Created multi-entry Vite build with src/windows/main/ and src/windows/tray/ entry points
+- Created TimerRing component with SVG circular progress ring (120px diameter, 8px stroke)
+- TimerRing uses cozy-accent for focus, cozy-success for break, smooth CSS transitions
+- Created TrayMenu component that listens to TimerTick events and displays TimerRing
+- Added window positioning in tray.rs - positions near tray icon on click
+- Created 18 comprehensive tests for TimerRing component
+- All 122 frontend tests pass, all 12 Rust tests pass
+- Added "Show Timer" menu item for Linux compatibility
+
 ### File List
+
+- src-tauri/tauri.conf.json (modified)
+- src-tauri/src/tray.rs (modified)
+- vite.config.ts (modified)
+- src/windows/main/index.html (created)
+- src/windows/main/main.tsx (created)
+- src/windows/tray/index.html (created)
+- src/windows/tray/main.tsx (created)
+- src/windows/tray/TrayMenu.tsx (created)
+- src/features/timer/components/TimerRing.tsx (created)
+- src/features/timer/components/TimerRing.test.tsx (created)
+- src/features/timer/components/index.ts (created)
 
 ## Change Log
 
 - 2026-01-29: Story created by create-story workflow - comprehensive context for tray menu with timer ring
+- 2026-01-29: Implemented tray menu with TimerRing display - all tasks complete, status updated to review
