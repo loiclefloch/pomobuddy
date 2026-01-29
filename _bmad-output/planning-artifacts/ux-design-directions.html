@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test-bmad - Design Direction Mockups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cozy Dark Theme */
+            --cozy-bg: #1C1816;
+            --cozy-surface: #2A2422;
+            --cozy-elevated: #3D3533;
+            --cozy-accent: #E8A598;
+            --cozy-success: #A8C5A0;
+            --cozy-text: #F5F0E8;
+            --cozy-muted: #A89888;
+            --cozy-border: #4A4240;
+            --cozy-warning: #E8C598;
+            
+            /* Character Colors */
+            --cat-accent: #F4B8A8;
+            --cow-accent: #F5E6D3;
+            --bear-accent: #B8D4E3;
+            --koala-accent: #A8C5A0;
+            --platypus-accent: #7BAFA3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0D0B0A;
+            color: var(--cozy-text);
+            line-height: 1.5;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Nunito', system-ui, sans-serif;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--cozy-bg);
+            border-bottom: 1px solid var(--cozy-border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .nav h1 {
+            font-size: 18px;
+            color: var(--cozy-accent);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--cozy-border);
+            border-radius: 12px;
+            color: var(--cozy-muted);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-tab:hover {
+            background: var(--cozy-surface);
+            color: var(--cozy-text);
+        }
+        
+        .nav-tab.active {
+            background: var(--cozy-accent);
+            color: var(--cozy-bg);
+            border-color: var(--cozy-accent);
+        }
+        
+        /* Main Content */
+        .main {
+            padding-top: 80px;
+        }
+        
+        .section {
+            display: none;
+            padding: 32px;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .section-header h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        
+        .section-header p {
+            color: var(--cozy-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Mockup Grid */
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .mockup-card {
+            background: var(--cozy-surface);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--cozy-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .mockup-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        .mockup-preview {
+            padding: 24px;
+            background: var(--cozy-bg);
+            min-height: 300px;
+        }
+        
+        .mockup-info {
+            padding: 20px 24px;
+        }
+        
+        .mockup-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .mockup-desc {
+            color: var(--cozy-muted);
+            font-size: 14px;
+        }
+        
+        /* ===== TRAY MENU MOCKUPS ===== */
+        
+        .tray-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+        
+        /* Direction 1: Minimal Compact */
+        .tray-minimal {
+            background: var(--cozy-surface);
+            border-radius: 16px;
+            padding: 8px;
+            width: 220px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        
+        .tray-minimal .tray-item {
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        
+        .tray-minimal .tray-item:hover {
+            background: var(--cozy-elevated);
+        }
+        
+        .tray-minimal .tray-item.primary {
+            background: var(--cozy-accent);
+            color: var(--cozy-bg);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .tray-minimal .tray-item.primary:hover {
+            background: #D99588;
+        }
+        
+        .tray-minimal .tray-divider {
+            height: 1px;
+            background: var(--cozy-border);
+            margin: 6px 0;
+        }
+        
+        .tray-minimal .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 12px;
+            color: var(--cozy-muted);
+            font-size: 12px;
+        }
+        
+        .tray-minimal .stat-value {
+            color: var(--cozy-text);
+            font-weight: 500;
+        }
+        
+        /* Direction 2: Character Focused */
+        .tray-character {
+            background: var(--cozy-surface);
+            border-radius: 20px;
+            width: 260px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        
+        .tray-character .character-header {
+            background: linear-gradient(135deg, var(--cozy-elevated) 0%, var(--cozy-surface) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--cozy-border);
+        }
+        
+        .tray-character .character-avatar {
+            width: 64px;
+            height: 64px;
+            background: var(--koala-accent);
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .tray-character .character-status {
+            font-size: 13px;
+            color: var(--cozy-muted);
+        }
+        
+        .tray-character .character-status strong {
+            color: var(--cozy-success);
+        }
+        
+        .tray-character .tray-content {
+            padding: 12px;
+        }
+        
+        .tray-character .start-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--cozy-accent);
+            color: var(--cozy-bg);
+            border: none;
+            border-radius: 14px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.2s ease;
+        }
+        
+        .tray-character .start-btn:hover {
+            background: #D99588;
+        }
+        
+        .tray-character .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .tray-character .stat-card {
+            background: var(--cozy-bg);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .tray-character .stat-card .value {
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .tray-character .stat-card .label {
+            font-size: 11px;
+            color: var(--cozy-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Direction 3: Timer Centric */
+        .tray-timer {
+            background: var(--cozy-surface);
+            border-radius: 24px;
+            width: 240px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        
+        .tray-timer .timer-ring {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--cozy-accent) 0% 70%, var(--cozy-border) 70% 100%);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .tray-timer .timer-ring::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--cozy-surface);
+            border-radius: 50%;
+        }
+        
+        .tray-timer .timer-display {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tray-timer .timer-time {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .tray-timer .timer-label {
+            font-size: 11px;
+            color: var(--cozy-muted);
+            text-transform: uppercase;
+        }
+        
+        .tray-timer .action-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--cozy-accent);
+            color: var(--cozy-bg);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+        
+        .tray-timer .quick-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--cozy-border);
+        }
+        
+        .tray-timer .quick-stat {
+            text-align: center;
+        }
+        
+        .tray-timer .quick-stat .num {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--cozy-text);
+        }
+        
+        .tray-timer .quick-stat .lbl {
+            font-size: 10px;
+            color: var(--cozy-muted);
+            text-transform: uppercase;
+        }
+        
+        /* ===== MAIN WINDOW MOCKUPS ===== */
+        
+        /* Direction 4: Dashboard Style */
+        .window-dashboard {
+            background: var(--cozy-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            height: 320px;
+        }
+        
+        .window-dashboard .win-header {
+            background: var(--cozy-surface);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cozy-border);
+        }
+        
+        .window-dashboard .win-title {
+            font-size: 16px;
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .window-dashboard .win-title .icon {
+            font-size: 20px;
+        }
+        
+        .window-dashboard .win-tabs {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .window-dashboard .win-tab {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--cozy-muted);
+            font-size: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .window-dashboard .win-tab.active {
+            background: var(--cozy-elevated);
+            color: var(--cozy-text);
+        }
+        
+        .window-dashboard .win-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .window-dashboard .stat-big {
+            background: var(--cozy-surface);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .window-dashboard .stat-big .num {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: var(--cozy-accent);
+        }
+        
+        .window-dashboard .stat-big .lbl {
+            font-size: 12px;
+            color: var(--cozy-muted);
+            margin-top: 4px;
+        }
+        
+        .window-dashboard .chart-placeholder {
+            background: var(--cozy-surface);
+            border-radius: 16px;
+            grid-column: span 2;
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+            gap: 8px;
+        }
+        
+        .window-dashboard .chart-bar {
+            flex: 1;
+            background: var(--cozy-accent);
+            border-radius: 6px 6px 0 0;
+            opacity: 0.6;
+        }
+        
+        .window-dashboard .chart-bar.today {
+            opacity: 1;
+        }
+        
+        /* Direction 5: Card-Based */
+        .window-cards {
+            background: var(--cozy-bg);
+            border-radius: 16px;
+            padding: 20px;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .window-cards .card-row {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .window-cards .card {
+            background: var(--cozy-surface);
+            border-radius: 16px;
+            padding: 16px;
+            flex: 1;
+        }
+        
+        .window-cards .card.accent {
+            background: linear-gradient(135deg, var(--cozy-accent) 0%, #D99588 100%);
+            color: var(--cozy-bg);
+        }
+        
+        .window-cards .card-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        
+        .window-cards .card-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .window-cards .card-sub {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .window-cards .achievement-row {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .window-cards .achievement {
+            width: 44px;
+            height: 44px;
+            background: var(--cozy-elevated);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .window-cards .achievement.locked {
+            opacity: 0.3;
+        }
+        
+        /* Direction 6: Minimal Stats */
+        .window-minimal {
+            background: var(--cozy-bg);
+            border-radius: 16px;
+            padding: 32px;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .window-minimal .big-number {
+            font-size: 64px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: var(--cozy-accent);
+            line-height: 1;
+        }
+        
+        .window-minimal .big-label {
+            font-size: 14px;
+            color: var(--cozy-muted);
+            margin-top: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .window-minimal .mini-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+        }
+        
+        .window-minimal .mini-stat {
+            text-align: center;
+        }
+        
+        .window-minimal .mini-stat .val {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .window-minimal .mini-stat .lbl {
+            font-size: 11px;
+            color: var(--cozy-muted);
+            text-transform: uppercase;
+        }
+        
+        /* ===== CELEBRATION MOCKUPS ===== */
+        
+        .celebration-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 280px;
+        }
+        
+        /* Direction 7: Full Screen Celebration */
+        .celebration-full {
+            background: radial-gradient(ellipse at center, var(--cozy-elevated) 0%, var(--cozy-bg) 70%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .celebration-full::before {
+            content: '✨';
+            position: absolute;
+            font-size: 48px;
+            top: 20px;
+            left: 20px;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        .celebration-full::after {
+            content: '🎉';
+            position: absolute;
+            font-size: 48px;
+            top: 30px;
+            right: 30px;
+            animation: float 2s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .celebration-full .char {
+            font-size: 80px;
+            margin-bottom: 16px;
+            animation: bounce 0.6s ease infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .celebration-full .title {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            color: var(--cozy-accent);
+            margin-bottom: 8px;
+        }
+        
+        .celebration-full .subtitle {
+            color: var(--cozy-muted);
+            font-size: 14px;
+        }
+        
+        /* Direction 8: Badge Focus */
+        .celebration-badge {
+            background: var(--cozy-surface);
+            border-radius: 24px;
+            padding: 32px 48px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(232, 165, 152, 0.2);
+        }
+        
+        .celebration-badge .badge-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--cozy-accent) 0%, #D99588 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 48px;
+            box-shadow: 0 4px 20px rgba(232, 165, 152, 0.4);
+        }
+        
+        .celebration-badge .badge-title {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            margin-bottom: 8px;
+        }
+        
+        .celebration-badge .badge-desc {
+            color: var(--cozy-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .celebration-badge .badge-btn {
+            padding: 12px 32px;
+            background: var(--cozy-accent);
+            color: var(--cozy-bg);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Full Screen View */
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            padding: 80px 40px 40px;
+            overflow-y: auto;
+        }
+        
+        .fullscreen-overlay.active {
+            display: block;
+        }
+        
+        .fullscreen-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--cozy-surface);
+            border: none;
+            color: var(--cozy-text);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 201;
+        }
+        
+        .fullscreen-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Color Palette Display */
+        .palette-section {
+            margin-bottom: 48px;
+        }
+        
+        .palette-section h3 {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .palette-swatch {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .palette-swatch .color {
+            height: 60px;
+        }
+        
+        .palette-swatch .info {
+            background: var(--cozy-surface);
+            padding: 10px;
+        }
+        
+        .palette-swatch .name {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .palette-swatch .hex {
+            font-size: 11px;
+            color: var(--cozy-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <h1>🐨 test-bmad Design Directions</h1>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('tray')">Tray Menu</button>
+            <button class="nav-tab" onclick="showSection('window')">Main Window</button>
+            <button class="nav-tab" onclick="showSection('celebration')">Celebrations</button>
+            <button class="nav-tab" onclick="showSection('palette')">Color System</button>
+        </div>
+    </nav>
+    
+    <main class="main">
+        <!-- TRAY MENU SECTION -->
+        <section id="tray" class="section active">
+            <div class="section-header">
+                <h2>Tray Menu Directions</h2>
+                <p>The tray menu is the primary interface. These directions explore different approaches to information density, character presence, and visual hierarchy.</p>
+            </div>
+            
+            <div class="mockup-grid">
+                <!-- Direction 1: Minimal Compact -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="tray-container">
+                            <div class="tray-minimal">
+                                <div class="tray-item primary">
+                                    ▶️ Start Session
+                                </div>
+                                <div class="stat-row">
+                                    <span>Streak</span>
+                                    <span class="stat-value">🔥 Day 12</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Today</span>
+                                    <span class="stat-value">4 sessions</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Focus time</span>
+                                    <span class="stat-value">2h 15m</span>
+                                </div>
+                                <div class="tray-divider"></div>
+                                <div class="tray-item">📊 Stats & History</div>
+                                <div class="tray-item">🏆 Achievements</div>
+                                <div class="tray-item">⚙️ Settings</div>
+                                <div class="tray-divider"></div>
+                                <div class="tray-item" style="color: var(--cozy-muted)">Quit</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 1: Minimal Compact</h3>
+                        <p class="mockup-desc">Clean, efficient, developer-friendly. Stats at a glance without visual noise. Primary action stands out.</p>
+                    </div>
+                </div>
+                
+                <!-- Direction 2: Character Focused -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="tray-container">
+                            <div class="tray-character">
+                                <div class="character-header">
+                                    <div class="character-avatar">🐨</div>
+                                    <div class="character-status">
+                                        <strong>Ready to focus!</strong><br>
+                                        Streak: Day 12 🔥
+                                    </div>
+                                </div>
+                                <div class="tray-content">
+                                    <button class="start-btn">Start Focus Session</button>
+                                    <div class="stats-grid">
+                                        <div class="stat-card">
+                                            <div class="value">4</div>
+                                            <div class="label">Today</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="value">2:15</div>
+                                            <div class="label">Hours</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 2: Character Focused</h3>
+                        <p class="mockup-desc">Companion front and center. Emotional connection emphasized. Character "greets" you in the menu.</p>
+                    </div>
+                </div>
+                
+                <!-- Direction 3: Timer Centric -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="tray-container">
+                            <div class="tray-timer">
+                                <div class="timer-ring">
+                                    <div class="timer-display">
+                                        <div class="timer-time">17:30</div>
+                                        <div class="timer-label">remaining</div>
+                                    </div>
+                                </div>
+                                <button class="action-btn">⏸ Pause Session</button>
+                                <div class="quick-stats">
+                                    <div class="quick-stat">
+                                        <div class="num">12</div>
+                                        <div class="lbl">Streak</div>
+                                    </div>
+                                    <div class="quick-stat">
+                                        <div class="num">4</div>
+                                        <div class="lbl">Today</div>
+                                    </div>
+                                    <div class="quick-stat">
+                                        <div class="num">2h</div>
+                                        <div class="lbl">Focus</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 3: Timer Centric</h3>
+                        <p class="mockup-desc">Visual timer progress as hero element. Perfect for active session state. Circular progress feels cozy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- MAIN WINDOW SECTION -->
+        <section id="window" class="section">
+            <div class="section-header">
+                <h2>Main Window Directions</h2>
+                <p>The main window is for stats deep-dives and achievement galleries. These directions explore different ways to visualize progress and celebrate accomplishments.</p>
+            </div>
+            
+            <div class="mockup-grid">
+                <!-- Direction 4: Dashboard Style -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="window-dashboard">
+                            <div class="win-header">
+                                <div class="win-title">
+                                    <span class="icon">🐨</span>
+                                    test-bmad
+                                </div>
+                                <div class="win-tabs">
+                                    <button class="win-tab active">Stats</button>
+                                    <button class="win-tab">Achievements</button>
+                                    <button class="win-tab">Settings</button>
+                                </div>
+                            </div>
+                            <div class="win-content">
+                                <div class="stat-big">
+                                    <div class="num">12</div>
+                                    <div class="lbl">Day Streak</div>
+                                </div>
+                                <div class="stat-big">
+                                    <div class="num">18.5h</div>
+                                    <div class="lbl">This Week</div>
+                                </div>
+                                <div class="chart-placeholder">
+                                    <div class="chart-bar" style="height: 40%"></div>
+                                    <div class="chart-bar" style="height: 70%"></div>
+                                    <div class="chart-bar" style="height: 55%"></div>
+                                    <div class="chart-bar" style="height: 80%"></div>
+                                    <div class="chart-bar" style="height: 65%"></div>
+                                    <div class="chart-bar" style="height: 45%"></div>
+                                    <div class="chart-bar today" style="height: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 4: Dashboard Style</h3>
+                        <p class="mockup-desc">Traditional dashboard layout with tabs. Charts visualize progress over time. Data-forward approach.</p>
+                    </div>
+                </div>
+                
+                <!-- Direction 5: Card-Based -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="window-cards">
+                            <div class="card-row">
+                                <div class="card accent">
+                                    <div class="card-title">Current Streak</div>
+                                    <div class="card-value">12 Days 🔥</div>
+                                    <div class="card-sub">Best: 21 days</div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">This Week</div>
+                                    <div class="card-value">18.5 hrs</div>
+                                    <div class="card-sub">+2.5 vs last week</div>
+                                </div>
+                            </div>
+                            <div class="card-row">
+                                <div class="card">
+                                    <div class="card-title">Today</div>
+                                    <div class="card-value">4 sessions</div>
+                                    <div class="card-sub">2h 15m focus</div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-title">All Time</div>
+                                    <div class="card-value">847</div>
+                                    <div class="card-sub">sessions completed</div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Recent Achievements</div>
+                                <div class="achievement-row">
+                                    <div class="achievement">🔥</div>
+                                    <div class="achievement">⭐</div>
+                                    <div class="achievement">🏆</div>
+                                    <div class="achievement locked">🎯</div>
+                                    <div class="achievement locked">💎</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 5: Card-Based</h3>
+                        <p class="mockup-desc">Modular card layout. Each stat in its own container. Achievements preview visible. Flexible grid.</p>
+                    </div>
+                </div>
+                
+                <!-- Direction 6: Minimal Focus -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="window-minimal">
+                            <div class="big-number">18.5</div>
+                            <div class="big-label">hours of deep work this week</div>
+                            <div class="mini-stats">
+                                <div class="mini-stat">
+                                    <div class="val">12 🔥</div>
+                                    <div class="lbl">Streak</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="val">4</div>
+                                    <div class="lbl">Today</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="val">847</div>
+                                    <div class="lbl">Total</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 6: Minimal Focus</h3>
+                        <p class="mockup-desc">One big number hero. Maximum impact, minimum clutter. "The Proof Moment" front and center.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CELEBRATION SECTION -->
+        <section id="celebration" class="section">
+            <div class="section-header">
+                <h2>Celebration Directions</h2>
+                <p>Milestone celebrations should feel BIG and earned. These directions explore different ways to create delight when users hit achievements.</p>
+            </div>
+            
+            <div class="mockup-grid">
+                <!-- Direction 7: Full Screen -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="celebration-container">
+                            <div class="celebration-full">
+                                <div class="char">🐨</div>
+                                <div class="title">7-Day Streak! 🎉</div>
+                                <div class="subtitle">Your koala is so proud of you!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 7: Full Screen Celebration</h3>
+                        <p class="mockup-desc">Take over the screen for big moments. Character dancing, particles, fanfare. Maximum delight.</p>
+                    </div>
+                </div>
+                
+                <!-- Direction 8: Badge Focus -->
+                <div class="mockup-card">
+                    <div class="mockup-preview">
+                        <div class="celebration-container">
+                            <div class="celebration-badge">
+                                <div class="badge-icon">🔥</div>
+                                <div class="badge-title">Fortnight Focus</div>
+                                <div class="badge-desc">14 days of consistent deep work</div>
+                                <button class="badge-btn">Celebrate! 🎉</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-info">
+                        <h3 class="mockup-title">Direction 8: Badge Focus</h3>
+                        <p class="mockup-desc">Achievement badge as hero. Modal style, collectible feeling. Badge becomes the reward.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- COLOR PALETTE SECTION -->
+        <section id="palette" class="section">
+            <div class="section-header">
+                <h2>Color System</h2>
+                <p>The complete cozy color palette. Warm, coffee-shop inspired tones for dark mode.</p>
+            </div>
+            
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div class="palette-section">
+                    <h3>Core Palette</h3>
+                    <div class="palette-grid">
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #1C1816"></div>
+                            <div class="info">
+                                <div class="name">Background</div>
+                                <div class="hex">#1C1816</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #2A2422"></div>
+                            <div class="info">
+                                <div class="name">Surface</div>
+                                <div class="hex">#2A2422</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #3D3533"></div>
+                            <div class="info">
+                                <div class="name">Elevated</div>
+                                <div class="hex">#3D3533</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #4A4240"></div>
+                            <div class="info">
+                                <div class="name">Border</div>
+                                <div class="hex">#4A4240</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #E8A598"></div>
+                            <div class="info">
+                                <div class="name">Accent</div>
+                                <div class="hex">#E8A598</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #A8C5A0"></div>
+                            <div class="info">
+                                <div class="name">Success</div>
+                                <div class="hex">#A8C5A0</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #F5F0E8"></div>
+                            <div class="info">
+                                <div class="name">Text</div>
+                                <div class="hex">#F5F0E8</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #A89888"></div>
+                            <div class="info">
+                                <div class="name">Muted</div>
+                                <div class="hex">#A89888</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-section">
+                    <h3>Character Accents</h3>
+                    <div class="palette-grid">
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #F4B8A8"></div>
+                            <div class="info">
+                                <div class="name">🐱 Cat</div>
+                                <div class="hex">#F4B8A8</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #F5E6D3"></div>
+                            <div class="info">
+                                <div class="name">🐄 Cow</div>
+                                <div class="hex">#F5E6D3</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #B8D4E3"></div>
+                            <div class="info">
+                                <div class="name">🐻‍❄️ Polar Bear</div>
+                                <div class="hex">#B8D4E3</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #A8C5A0"></div>
+                            <div class="info">
+                                <div class="name">🐨 Koala</div>
+                                <div class="hex">#A8C5A0</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #7BAFA3"></div>
+                            <div class="info">
+                                <div class="name">🦆 Platypus</div>
+                                <div class="hex">#7BAFA3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-section">
+                    <h3>Semantic Colors</h3>
+                    <div class="palette-grid">
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #A8C5A0"></div>
+                            <div class="info">
+                                <div class="name">Success</div>
+                                <div class="hex">#A8C5A0</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #E8C598"></div>
+                            <div class="info">
+                                <div class="name">Warning</div>
+                                <div class="hex">#E8C598</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #D9A5A5"></div>
+                            <div class="info">
+                                <div class="name">Error</div>
+                                <div class="hex">#D9A5A5</div>
+                            </div>
+                        </div>
+                        <div class="palette-swatch">
+                            <div class="color" style="background: #A5B8C5"></div>
+                            <div class="info">
+                                <div class="name">Info</div>
+                                <div class="hex">#A5B8C5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            // Update nav tabs
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

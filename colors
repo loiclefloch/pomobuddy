@@ -1,0 +1,9 @@
+
+| Background       | Warm cream #FAF7F2   | Deep espresso #1C1816 | Base canvas                       |
+| Surface          | Soft beige #F5F0E8   | Warm charcoal #2A2422 | Cards, menus, containers          |
+| Surface Elevated | White #FFFFFF        | Coffee brown #3D3533  | Hover states, popups              |
+| Primary Accent   | Muted coral #E8A598  | Muted coral #E8A598   | Buttons, highlights, focus states |
+| Secondary Accent | Soft sage #A8C5A0    | Soft sage #A8C5A0     | Success, completion states        |
+| Text Primary     | Warm brown #3D3028   | Cream #F5F0E8         | Main readable text                |
+| Text Muted       | Medium brown #8B7355 | Warm gray #A89888     | Secondary text, labels            |
+| Border           | Tan #E5DDD0          | Warm border #4A4240   | 
