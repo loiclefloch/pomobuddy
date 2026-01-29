@@ -36,3 +36,15 @@ pub struct StreakUpdatedPayload {
     pub current_streak: u32,
     pub longest_streak: u32,
 }
+
+/// Event payload for achievement unlocked (sent to frontend for celebration)
+#[derive(Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AchievementUnlockedPayload {
+    pub id: String,
+    pub title: String,
+    pub description: String,
+    pub tier: String,
+    pub icon: String,
+    pub unlocked_at: String,
+}

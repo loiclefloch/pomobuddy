@@ -6,6 +6,7 @@ mod state;
 mod storage;
 mod tray;
 
+use commands::achievements;
 use commands::app;
 use commands::session;
 use commands::settings;
@@ -73,6 +74,8 @@ pub fn run() {
             settings::change_storage_location,
             settings::reset_storage_location,
             streak::get_streak_data_cmd,
+            achievements::get_achievements,
+            achievements::get_total_sessions,
             app::quit_app,
         ])
         .run(tauri::generate_context!())

@@ -1,16 +1,25 @@
 use crate::error::TimerError;
-use crate::events::{SessionCompletePayload, SessionSavedPayload, StreakUpdatedPayload, TimerTickPayload};
-use crate::notifications::{send_break_complete_notification, send_focus_complete_notification};
+use crate::events::{AchievementUnlockedPayload, SessionCompletePayload, SessionSavedPayload, StreakUpdatedPayload, TimerTickPayload};
+use crate::notifications::{send_achievement_unlocked_notification, send_break_complete_notification, send_focus_complete_notification};
 use crate::state::{TimerState, TimerStateWrapper, TimerStatus, BREAK_DURATION_SECONDS, FOCUS_DURATION_SECONDS};
 use crate::storage::recovery::{create_recovery_file, delete_recovery_file, update_recovery_tick};
 use crate::storage::sessions::{save_session, Session, SessionStatus, SessionType, get_today_summary};
-use crate::storage::achievements::update_streak_on_completion;
+use crate::storage::achievements::{update_streak_on_completion, check_and_unlock_achievements, AchievementTier};
 use crate::tray::update_tray_icon;
 use chrono::{Local, Utc};
 use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, State};
+
+fn tier_to_string(tier: AchievementTier) -> String {
+    match tier {
+        AchievementTier::Bronze => "bronze".to_string(),
+        AchievementTier::Silver => "silver".to_string(),
+        AchievementTier::Gold => "gold".to_string(),
+        AchievementTier::Platinum => "platinum".to_string(),
+    }
+}
 
 fn emit_session_saved(app: &AppHandle, session_type: SessionType, status: SessionStatus, duration_seconds: u32) {
     if let Ok(summary) = get_today_summary() {
@@ -32,6 +41,22 @@ fn emit_session_saved(app: &AppHandle, session_type: SessionType, status: Sessio
                 longest_streak: achievements.longest_streak,
             };
             let _ = app.emit("StreakUpdated", streak_payload);
+        }
+        
+        if let Ok(newly_unlocked) = check_and_unlock_achievements() {
+            for (achievement, unlocked_at) in newly_unlocked {
+                let payload = AchievementUnlockedPayload {
+                    id: achievement.id,
+                    title: achievement.title.clone(),
+                    description: achievement.description,
+                    tier: tier_to_string(achievement.tier),
+                    icon: achievement.icon,
+                    unlocked_at,
+                };
+                let _ = app.emit("AchievementUnlocked", payload);
+                
+                send_achievement_unlocked_notification(app, &achievement.title);
+            }
         }
     }
 }

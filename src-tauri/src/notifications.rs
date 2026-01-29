@@ -23,3 +23,15 @@ pub fn send_break_complete_notification(app: &tauri::AppHandle) {
         eprintln!("Failed to send break complete notification: {}", e);
     }
 }
+
+pub fn send_achievement_unlocked_notification(app: &tauri::AppHandle, title: &str) {
+    if let Err(e) = app
+        .notification()
+        .builder()
+        .title("Achievement Unlocked!")
+        .body(title)
+        .show()
+    {
+        eprintln!("Failed to send achievement unlocked notification: {}", e);
+    }
+}

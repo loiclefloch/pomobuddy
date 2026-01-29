@@ -1,3 +1,4 @@
+pub mod achievements;
 pub mod app;
 pub mod session;
 pub mod settings;
