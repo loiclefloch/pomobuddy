@@ -10,8 +10,10 @@ use commands::app;
 use commands::session;
 use commands::settings;
 use commands::stats;
+use commands::streak;
 use commands::timer;
 use state::TimerStateWrapper;
+use storage::achievements::recalculate_streak_on_startup;
 use storage::recovery::check_and_recover_session;
 use storage::settings::initialize_settings;
 
@@ -32,6 +34,10 @@ pub fn run() {
             recovered.duration_seconds / 60,
             recovered.session_type.as_str()
         );
+    }
+
+    if let Err(e) = recalculate_streak_on_startup() {
+        eprintln!("Warning: Failed to recalculate streak: {}", e);
     }
     
     tauri::Builder::default()
@@ -66,6 +72,7 @@ pub fn run() {
             settings::pick_storage_folder,
             settings::change_storage_location,
             settings::reset_storage_location,
+            streak::get_streak_data_cmd,
             app::quit_app,
         ])
         .run(tauri::generate_context!())

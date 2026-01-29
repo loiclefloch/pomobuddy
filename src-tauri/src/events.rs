@@ -28,3 +28,11 @@ pub struct SessionSavedPayload {
     pub partial_count: u32,
     pub total_focus_minutes: u32,
 }
+
+/// Event payload for streak updates (sent to frontend when streak changes)
+#[derive(Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct StreakUpdatedPayload {
+    pub current_streak: u32,
+    pub longest_streak: u32,
+}

@@ -1,9 +1,10 @@
 use crate::error::TimerError;
-use crate::events::{SessionCompletePayload, SessionSavedPayload, TimerTickPayload};
+use crate::events::{SessionCompletePayload, SessionSavedPayload, StreakUpdatedPayload, TimerTickPayload};
 use crate::notifications::{send_break_complete_notification, send_focus_complete_notification};
 use crate::state::{TimerState, TimerStateWrapper, TimerStatus, BREAK_DURATION_SECONDS, FOCUS_DURATION_SECONDS};
 use crate::storage::recovery::{create_recovery_file, delete_recovery_file, update_recovery_tick};
 use crate::storage::sessions::{save_session, Session, SessionStatus, SessionType, get_today_summary};
+use crate::storage::achievements::update_streak_on_completion;
 use crate::tray::update_tray_icon;
 use chrono::{Local, Utc};
 use std::sync::Arc;
@@ -22,6 +23,16 @@ fn emit_session_saved(app: &AppHandle, session_type: SessionType, status: Sessio
             total_focus_minutes: summary.total_focus_minutes,
         };
         let _ = app.emit("SessionSaved", payload);
+    }
+    
+    if status == SessionStatus::Complete && session_type == SessionType::Focus {
+        if let Ok(achievements) = update_streak_on_completion(status) {
+            let streak_payload = StreakUpdatedPayload {
+                current_streak: achievements.current_streak,
+                longest_streak: achievements.longest_streak,
+            };
+            let _ = app.emit("StreakUpdated", streak_payload);
+        }
     }
 }
 
