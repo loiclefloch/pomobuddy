@@ -1,9 +1,12 @@
 import { Coffee } from "lucide-react";
 import { TimerDisplay, TimerControls, useTimer } from "@/features/timer";
 import { TodayStats, SessionHistoryContainer, WeeklyBarChart } from "@/features/stats/components";
+import { StreakCard } from "@/features/achievements/components";
+import { useStreak } from "@/features/achievements/hooks";
 
 function App() {
   const { start, pause, resume, stop } = useTimer();
+  const { currentStreak, longestStreak, isMilestone } = useStreak();
 
   return (
     <main className="min-h-screen bg-cozy-bg flex flex-col items-center justify-center p-8">
@@ -22,8 +25,13 @@ function App() {
         />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col sm:flex-row gap-4">
         <TodayStats />
+        <StreakCard
+          currentStreak={currentStreak}
+          longestStreak={longestStreak}
+          isMilestone={isMilestone}
+        />
       </div>
 
       <div className="mt-6 w-full max-w-md">
