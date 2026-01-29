@@ -306,20 +306,11 @@ fn parse_session_line(line: &str, date: NaiveDate) -> Option<Session> {
 }
 
 /// Get the platform-specific data directory for sessions
+///
+/// Uses custom storage path from settings if configured, otherwise default data directory.
 pub fn get_sessions_directory() -> Result<PathBuf, AppError> {
-    let data_dir = dirs::data_dir()
-        .ok_or_else(|| AppError::StorageError("Could not determine data directory".to_string()))?;
-    
-    let sessions_dir = data_dir.join("test-bmad").join("sessions");
-    
-    // Create directory if it doesn't exist
-    if !sessions_dir.exists() {
-        fs::create_dir_all(&sessions_dir).map_err(|e| {
-            AppError::StorageError(format!("Failed to create sessions directory: {}", e))
-        })?;
-    }
-    
-    Ok(sessions_dir)
+    let settings = crate::storage::settings::load_settings()?;
+    crate::storage::settings::get_effective_sessions_directory(&settings)
 }
 
 /// Get the file path for a specific date

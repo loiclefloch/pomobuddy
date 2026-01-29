@@ -8,10 +8,12 @@ mod tray;
 
 use commands::app;
 use commands::session;
+use commands::settings;
 use commands::stats;
 use commands::timer;
 use state::TimerStateWrapper;
 use storage::recovery::check_and_recover_session;
+use storage::settings::initialize_settings;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -20,6 +22,10 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    if let Err(e) = initialize_settings() {
+        eprintln!("Warning: Failed to initialize settings: {}", e);
+    }
+
     if let Ok(Some(recovered)) = check_and_recover_session() {
         eprintln!(
             "Recovered interrupted session: {} minutes of {}",
@@ -31,6 +37,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_dialog::init())
         .manage(TimerStateWrapper::new())
         .setup(|app| {
             if let Err(e) = tray::setup_tray(app.handle()) {
@@ -48,11 +55,17 @@ pub fn run() {
             stats::get_quick_stats,
             stats::get_today_stats,
             stats::get_session_history,
+            stats::get_weekly_stats,
             session::save_session_cmd,
             session::get_sessions_for_date,
             session::get_today_sessions,
             session::save_completed_session,
             session::save_interrupted_session,
+            settings::get_settings,
+            settings::update_settings,
+            settings::pick_storage_folder,
+            settings::change_storage_location,
+            settings::reset_storage_location,
             app::quit_app,
         ])
         .run(tauri::generate_context!())

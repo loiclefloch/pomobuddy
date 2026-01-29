@@ -65,8 +65,8 @@ development_status:
   3-2-track-and-persist-completed-and-interrupted-sessions: review
   3-3-create-daily-statistics-view: review
   3-4-build-session-history-view: review
-  3-5-implement-weekly-bar-chart-visualization: backlog
-  3-6-add-settings-storage-and-configuration: backlog
+  3-5-implement-weekly-bar-chart-visualization: review
+  3-6-add-settings-storage-and-configuration: review
   epic-3-retrospective: optional
 
   # Epic 4: Streaks & Achievements

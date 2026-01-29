@@ -5,4 +5,5 @@ export { SessionHistoryItem } from "./SessionHistoryItem";
 export { DaySection } from "./DaySection";
 export { SessionHistory } from "./SessionHistory";
 export { SessionHistoryContainer } from "./SessionHistoryContainer";
+export { WeeklyBarChart } from "./WeeklyBarChart";
 export type { DayHistory } from "./SessionHistory";

@@ -1,6 +1,6 @@
 # Story 3.5: Implement Weekly Bar Chart Visualization
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -45,48 +45,48 @@ So that I can visualize my productivity trends.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create WeeklyBarChart Component (AC: #1, #2)
-  - [ ] 1.1: Create `src/features/stats/components/WeeklyBarChart.tsx`
-  - [ ] 1.2: Render 7 vertical bars using CSS/div elements
-  - [ ] 1.3: Calculate bar heights from data (scale to max)
-  - [ ] 1.4: Style with cozy-accent color and opacity variants
-  - [ ] 1.5: Add day labels on x-axis (Mon, Tue, etc.)
+- [x] Task 1: Create WeeklyBarChart Component (AC: #1, #2)
+  - [x] 1.1: Create `src/features/stats/components/WeeklyBarChart.tsx`
+  - [x] 1.2: Render 7 vertical bars using CSS/div elements
+  - [x] 1.3: Calculate bar heights from data (scale to max)
+  - [x] 1.4: Style with cozy-accent color and opacity variants
+  - [x] 1.5: Add day labels on x-axis (Mon, Tue, etc.)
 
-- [ ] Task 2: Implement Bar Styling (AC: #2)
-  - [ ] 2.1: Today's bar at 100% opacity
-  - [ ] 2.2: Other bars at 60% opacity
-  - [ ] 2.3: Rounded top corners (`rounded-t-md`)
-  - [ ] 2.4: Minimum stub height for empty days (4px)
-  - [ ] 2.5: Smooth hover transitions
+- [x] Task 2: Implement Bar Styling (AC: #2)
+  - [x] 2.1: Today's bar at 100% opacity
+  - [x] 2.2: Other bars at 60% opacity
+  - [x] 2.3: Rounded top corners (`rounded-t-md`)
+  - [x] 2.4: Minimum stub height for empty days (4px)
+  - [x] 2.5: Smooth hover transitions
 
-- [ ] Task 3: Add Tooltips (AC: #3)
-  - [ ] 3.1: Use shadcn/ui Tooltip or custom hover tooltip
-  - [ ] 3.2: Show day name and date
-  - [ ] 3.3: Show focus time formatted
-  - [ ] 3.4: Show session count
-  - [ ] 3.5: Position tooltip above bar
+- [x] Task 3: Add Tooltips (AC: #3)
+  - [x] 3.1: Use shadcn/ui Tooltip or custom hover tooltip
+  - [x] 3.2: Show day name and date
+  - [x] 3.3: Show focus time formatted
+  - [x] 3.4: Show session count
+  - [x] 3.5: Position tooltip above bar
 
-- [ ] Task 4: Implement Backend Command (AC: #4)
-  - [ ] 4.1: Create `getWeeklyStats` command
-  - [ ] 4.2: Read session files for last 7 days
-  - [ ] 4.3: Calculate daily totals
-  - [ ] 4.4: Return array of 7 day entries
+- [x] Task 4: Implement Backend Command (AC: #4)
+  - [x] 4.1: Create `getWeeklyStats` command
+  - [x] 4.2: Read session files for last 7 days
+  - [x] 4.3: Calculate daily totals
+  - [x] 4.4: Return array of 7 day entries
 
-- [ ] Task 5: Create useWeeklyData Hook (AC: #4)
-  - [ ] 5.1: Create `src/features/stats/hooks/useWeeklyData.ts`
-  - [ ] 5.2: Fetch weekly data via IPC
-  - [ ] 5.3: Calculate weekly total
-  - [ ] 5.4: Update on session complete
+- [x] Task 5: Create useWeeklyData Hook (AC: #4)
+  - [x] 5.1: Create `src/features/stats/hooks/useWeeklyData.ts`
+  - [x] 5.2: Fetch weekly data via IPC
+  - [x] 5.3: Calculate weekly total
+  - [x] 5.4: Update on session complete
 
-- [ ] Task 6: Add Chart Header (AC: #5)
-  - [ ] 6.1: "This Week" title
-  - [ ] 6.2: Weekly total display (e.g., "12.5 hours total")
-  - [ ] 6.3: Style consistently with other sections
+- [x] Task 6: Add Chart Header (AC: #5)
+  - [x] 6.1: "This Week" title
+  - [x] 6.2: Weekly total display (e.g., "12.5 hours total")
+  - [x] 6.3: Style consistently with other sections
 
-- [ ] Task 7: Add to Main Window (AC: #5)
-  - [ ] 7.1: Import WeeklyBarChart
-  - [ ] 7.2: Position below TodayStats cards
-  - [ ] 7.3: Responsive width
+- [x] Task 7: Add to Main Window (AC: #5)
+  - [x] 7.1: Import WeeklyBarChart
+  - [x] 7.2: Position below TodayStats cards
+  - [x] 7.3: Responsive width
 
 ## Dev Notes
 
@@ -178,10 +178,40 @@ struct DayStats {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4 (Anthropic)
 
 ### Debug Log References
 
+N/A - Implementation completed without issues.
+
 ### Completion Notes List
 
+- Implemented `get_weekly_stats` Rust command that retrieves session data for the last 7 days
+- Created `useWeeklyData` hook with IPC fetching, loading state, and auto-refresh on session events
+- Built `WeeklyBarChart` component with pure CSS/React (no chart library):
+  - 7 bars with proportional heights based on focus minutes
+  - Today's bar at 100% opacity, others at 60%
+  - Minimum 4px stub height for empty days
+  - Custom hover tooltip showing day name, date, focus time, and session count
+  - "This Week" header with total hours display
+- Added WeeklyBarChart to App.tsx below TodayStats
+- All 26 new tests pass (16 component tests + 10 hook tests)
+- Full test suite passes (248 tests)
+
 ### File List
+
+**Created:**
+- `src/features/stats/components/WeeklyBarChart.tsx`
+- `src/features/stats/components/WeeklyBarChart.test.tsx`
+- `src/features/stats/hooks/useWeeklyData.ts`
+- `src/features/stats/hooks/useWeeklyData.test.ts`
+
+**Modified:**
+- `src-tauri/src/commands/stats.rs` - Added DayStats, WeeklyStatsResponse structs and get_weekly_stats command
+- `src-tauri/src/lib.rs` - Registered get_weekly_stats command
+- `src/features/stats/components/index.ts` - Exported WeeklyBarChart
+- `src/App.tsx` - Added WeeklyBarChart below TodayStats
+
+## Change Log
+
+- 2026-01-29: Implemented weekly bar chart visualization (Story 3.5)

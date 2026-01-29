@@ -1,6 +1,6 @@
 import { Coffee } from "lucide-react";
 import { TimerDisplay, TimerControls, useTimer } from "@/features/timer";
-import { TodayStats, SessionHistoryContainer } from "@/features/stats/components";
+import { TodayStats, SessionHistoryContainer, WeeklyBarChart } from "@/features/stats/components";
 
 function App() {
   const { start, pause, resume, stop } = useTimer();
@@ -24,6 +24,10 @@ function App() {
 
       <div className="mt-8">
         <TodayStats />
+      </div>
+
+      <div className="mt-6 w-full max-w-md">
+        <WeeklyBarChart />
       </div>
 
       <div className="mt-6 w-full max-w-md">
