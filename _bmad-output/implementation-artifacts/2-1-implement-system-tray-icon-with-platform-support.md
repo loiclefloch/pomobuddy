@@ -46,11 +46,11 @@ So that I can access the app quickly without it taking up space in my taskbar.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Add Tauri Tray Plugin to Project (AC: #1)
-  - [ ] 1.1: Add `tauri-plugin-tray-icon` or equivalent tray dependency to `src-tauri/Cargo.toml`
-  - [ ] 1.2: Register tray plugin in `src-tauri/src/main.rs` using Tauri 2.0 builder pattern
+- [ ] Task 1: Enable Tauri Tray Feature (AC: #1)
+  - [ ] 1.1: Add `tray-icon` feature to tauri dependency in `src-tauri/Cargo.toml`
+  - [ ] 1.2: Add `image-png` feature for PNG icon support (optional but recommended)
   - [ ] 1.3: Configure tray permissions in `src-tauri/capabilities/default.json`
-  - [ ] 1.4: Run `cargo build` to verify plugin integration compiles
+  - [ ] 1.4: Run `cargo build` to verify feature integration compiles
 
 - [ ] Task 2: Create Tray Icon Assets (AC: #2)
   - [ ] 2.1: Create `public/assets/icons/tray/` directory structure
@@ -61,10 +61,11 @@ So that I can access the app quickly without it taking up space in my taskbar.
 
 - [ ] Task 3: Implement Tray Icon Setup in Rust Backend (AC: #3, #4)
   - [ ] 3.1: Create `src-tauri/src/tray.rs` module for tray management
-  - [ ] 3.2: Implement `setup_tray()` function to create initial tray icon
-  - [ ] 3.3: Register tray setup in `src-tauri/src/main.rs` builder
-  - [ ] 3.4: Implement click handler to show/hide tray window (Story 2.2 prep)
-  - [ ] 3.5: Export tray module in `src-tauri/src/lib.rs`
+  - [ ] 3.2: Implement `setup_tray()` function to create initial tray icon with menu
+  - [ ] 3.3: Add basic context menu items (Show, Hide, Quit) for Linux compatibility
+  - [ ] 3.4: Register tray setup in `src-tauri/src/main.rs` builder
+  - [ ] 3.5: Implement click handler for macOS (show/hide tray window - Story 2.2 prep)
+  - [ ] 3.6: Export tray module in `src-tauri/src/lib.rs`
 
 - [ ] Task 4: Implement Dynamic Icon Updates Based on Timer State (AC: #5)
   - [ ] 4.1: Create `update_tray_icon(state: TimerStatus)` function in tray module
@@ -75,9 +76,10 @@ So that I can access the app quickly without it taking up space in my taskbar.
 - [ ] Task 5: Platform Testing (AC: #3, #4)
   - [ ] 5.1: Test tray icon appearance on macOS menu bar
   - [ ] 5.2: Verify icon displays correctly in Retina (@2x) resolution on macOS
-  - [ ] 5.3: Test tray icon on Linux (if available) - GNOME/KDE
-  - [ ] 5.4: Verify click events work on both platforms
-  - [ ] 5.5: Document any platform-specific issues encountered
+  - [ ] 5.3: Verify left-click events work on macOS
+  - [ ] 5.4: Test tray icon on Linux (if available) - GNOME/KDE
+  - [ ] 5.5: Verify context menu (right-click) works on Linux (left-click unsupported)
+  - [ ] 5.6: Document any platform-specific issues encountered
 
 - [ ] Task 6: Error Handling and Edge Cases
   - [ ] 6.1: Handle tray creation failure gracefully (log, don't crash)
@@ -207,34 +209,64 @@ tauri = { version = "2", features = ["tray-icon"] }
 }
 ```
 
-**Tray Setup in main.rs (Tauri 2.0 Pattern):**
+**Tray Setup in main.rs (Tauri 2.0 Pattern - Cross-Platform):**
 ```rust
 use tauri::{
-    tray::{TrayIconBuilder, TrayIconEvent},
+    menu::{Menu, MenuItem},
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Manager,
 };
 
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
-            // Create tray icon on app setup
-            let tray = TrayIconBuilder::new()
+            // Create menu items (REQUIRED for Linux interaction)
+            let show = MenuItem::with_id(app, "show", "Show Window", true, None::<&str>)?;
+            let hide = MenuItem::with_id(app, "hide", "Hide Window", true, None::<&str>)?;
+            let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            
+            let menu = Menu::with_items(app, &[&show, &hide, &quit])?;
+            
+            // Create tray icon
+            let _tray = TrayIconBuilder::new()
                 .icon(app.default_window_icon().unwrap().clone())
-                .tooltip("test-bmad - Focus Timer")
+                .icon_as_template(true)  // macOS: adapt to dark/light mode
+                .tooltip("test-bmad - Focus Timer")  // macOS only
+                .menu(&menu)  // REQUIRED for Linux compatibility
+                .show_menu_on_left_click(false)  // Right-click shows menu
+                .on_menu_event(|app, event| match event.id.as_ref() {
+                    "show" => {
+                        if let Some(w) = app.get_webview_window("main") {
+                            let _ = w.show();
+                            let _ = w.set_focus();
+                        }
+                    }
+                    "hide" => {
+                        if let Some(w) = app.get_webview_window("main") {
+                            let _ = w.hide();
+                        }
+                    }
+                    "quit" => app.exit(0),
+                    _ => {}
+                })
                 .on_tray_icon_event(|tray, event| {
-                    match event {
-                        TrayIconEvent::Click { button, button_state, .. } => {
-                            // Handle click - toggle tray window visibility
-                            if let Some(window) = tray.app_handle().get_webview_window("tray") {
-                                if window.is_visible().unwrap_or(false) {
-                                    let _ = window.hide();
-                                } else {
-                                    let _ = window.show();
-                                    let _ = window.set_focus();
-                                }
+                    // NOTE: This does NOT fire on Linux!
+                    // Use only for enhanced macOS experience
+                    if let TrayIconEvent::Click {
+                        button: MouseButton::Left,
+                        button_state: MouseButtonState::Up,
+                        ..
+                    } = event
+                    {
+                        let app = tray.app_handle();
+                        if let Some(window) = app.get_webview_window("tray") {
+                            if window.is_visible().unwrap_or(false) {
+                                let _ = window.hide();
+                            } else {
+                                let _ = window.show();
+                                let _ = window.set_focus();
                             }
                         }
-                        _ => {}
                     }
                 })
                 .build(app)?;
