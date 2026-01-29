@@ -1,6 +1,8 @@
 use crate::error::TimerError;
 use crate::events::{SessionCompletePayload, TimerTickPayload};
+use crate::notifications::{send_break_complete_notification, send_focus_complete_notification};
 use crate::state::{TimerState, TimerStateWrapper, TimerStatus, BREAK_DURATION_SECONDS, FOCUS_DURATION_SECONDS};
+use crate::tray::update_tray_icon;
 use chrono::Utc;
 use std::sync::Arc;
 use std::thread;
@@ -26,6 +28,7 @@ pub fn start_timer(
     }
 
     timer.start_focus();
+    update_tray_icon(&app, "focus");
     let current_state = timer.clone();
     drop(timer);
 
@@ -74,7 +77,7 @@ pub fn resume_timer(state: State<'_, TimerStateWrapper>) -> Result<TimerState, S
 }
 
 #[tauri::command]
-pub fn stop_timer(state: State<'_, TimerStateWrapper>) -> Result<TimerState, String> {
+pub fn stop_timer(state: State<'_, TimerStateWrapper>, app: AppHandle) -> Result<TimerState, String> {
     state.set_running(false);
 
     let mut timer = state
@@ -83,6 +86,7 @@ pub fn stop_timer(state: State<'_, TimerStateWrapper>) -> Result<TimerState, Str
         .map_err(|_| TimerError::LockPoisoned.to_string())?;
 
     timer.stop();
+    update_tray_icon(&app, "idle");
 
     Ok(timer.clone())
 }
@@ -146,14 +150,18 @@ fn spawn_timer_thread(
                 let _ = app.emit("SessionComplete", complete_payload);
 
                 if timer.status == TimerStatus::Focus {
+                    send_focus_complete_notification(&app);
                     timer.start_break();
+                    update_tray_icon(&app, "break");
                     let tick_payload = TimerTickPayload {
                         remaining_seconds: timer.remaining_seconds,
                         status: timer.status.as_str().to_string(),
                     };
                     let _ = app.emit("TimerTick", tick_payload);
                 } else {
+                    send_break_complete_notification(&app);
                     timer.stop();
+                    update_tray_icon(&app, "idle");
                     running.store(false, std::sync::atomic::Ordering::SeqCst);
                     let tick_payload = TimerTickPayload {
                         remaining_seconds: 0,

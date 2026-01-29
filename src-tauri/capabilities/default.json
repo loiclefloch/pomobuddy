@@ -5,6 +5,14 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    "notification:default",
+    "notification:allow-show",
+    "notification:allow-request-permission",
+    "notification:allow-is-permission-granted",
+    "core:tray:default",
+    "core:tray:allow-set-icon",
+    "core:tray:allow-set-title",
+    "core:tray:allow-set-tooltip"
   ]
 }

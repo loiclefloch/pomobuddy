@@ -17,6 +17,20 @@
         "title": "test-bmad",
         "width": 800,
         "height": 600
+      },
+      {
+        "label": "tray",
+        "title": "",
+        "width": 280,
+        "height": 400,
+        "visible": false,
+        "decorations": false,
+        "resizable": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "focus": false,
+        "transparent": false,
+        "center": false
       }
     ],
     "security": {

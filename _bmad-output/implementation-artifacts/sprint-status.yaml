@@ -53,7 +53,7 @@ development_status:
   # Epic 2: System Tray Integration & Platform Experience
   epic-2: in-progress
   2-1-implement-system-tray-icon-with-platform-support: ready-for-dev
-  2-2-create-tray-menu-with-timer-ring-display: backlog
+  2-2-create-tray-menu-with-timer-ring-display: ready-for-dev
   2-3-add-quick-stats-to-tray-menu: backlog
   2-4-enable-start-stop-session-from-tray-menu: backlog
   2-5-add-main-window-launch-from-tray: backlog
