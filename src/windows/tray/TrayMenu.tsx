@@ -8,6 +8,7 @@ import { useQuickStats } from "@/features/stats/hooks/useQuickStats";
 import { TrayMenuItems } from "./components/TrayMenuItems";
 import {
   openMainWindow,
+  openMainWindowWithView,
   openSettingsWindow,
   quitApp,
 } from "@/shared/utils/window";
@@ -65,7 +66,7 @@ export default function TrayMenu() {
   };
 
   const handleOpenAchievements = () => {
-    openMainWindow().catch(console.error);
+    openMainWindowWithView("achievements").catch(console.error);
   };
 
   const handleOpenSettings = () => {

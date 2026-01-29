@@ -75,7 +75,7 @@ development_status:
   4-2-display-current-streak-in-ui: review
   4-3-define-achievement-system-and-badges: review
   4-4-implement-achievement-unlock-detection: review
-  4-5-create-achievement-gallery-view: backlog
+  4-5-create-achievement-gallery-view: review
   4-6-build-full-screen-celebration-overlay: backlog
   epic-4-retrospective: optional
 
