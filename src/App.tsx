@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { Timer, Coffee } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -11,13 +12,19 @@ function App() {
   }
 
   return (
-    <main className="container">
-      <h1>Welcome to test-bmad!</h1>
+    <main className="min-h-screen bg-cozy-bg flex flex-col items-center justify-center p-8">
+      <div className="flex items-center gap-3 mb-4">
+        <Timer className="size-10 text-cozy-accent" />
+        <h1 className="text-4xl font-heading text-cozy-text">
+          Welcome to test-bmad!
+        </h1>
+        <Coffee className="size-10 text-cozy-success" />
+      </div>
 
-      <p>Your cozy focus companion</p>
+      <p className="text-cozy-muted mb-8">Your cozy focus companion</p>
 
       <form
-        className="row"
+        className="flex gap-4 mb-4"
         onSubmit={(e) => {
           e.preventDefault();
           greet();
@@ -25,12 +32,13 @@ function App() {
       >
         <input
           id="greet-input"
+          className="px-4 py-2 bg-cozy-surface text-cozy-text border border-cozy-border rounded-lg focus:outline-none focus:ring-2 focus:ring-cozy-accent"
           onChange={(e) => setName(e.currentTarget.value)}
           placeholder="Enter a name..."
         />
-        <button type="submit">Greet</button>
+        <Button type="submit">Greet</Button>
       </form>
-      <p>{greetMsg}</p>
+      <p className="text-cozy-success">{greetMsg}</p>
     </main>
   );
 }
