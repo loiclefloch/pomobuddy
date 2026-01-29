@@ -44,6 +44,10 @@ describe("formatDuration", () => {
 });
 
 describe("formatFocusTime", () => {
+  it("formats 0 minutes as 0m", () => {
+    expect(formatFocusTime(0)).toBe("0m");
+  });
+
   it("formats minutes under 60 as Xm", () => {
     expect(formatFocusTime(25)).toBe("25m");
   });

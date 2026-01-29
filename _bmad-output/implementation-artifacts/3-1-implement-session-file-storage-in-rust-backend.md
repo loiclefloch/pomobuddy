@@ -1,6 +1,6 @@
 # Story 3.1: Implement Session File Storage in Rust Backend
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -43,49 +43,49 @@ So that I own my data and can back it up or sync it with git.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create Storage Module Structure (AC: #1)
-  - [ ] 1.1: Create `src-tauri/src/storage/mod.rs`
-  - [ ] 1.2: Create `src-tauri/src/storage/sessions.rs`
-  - [ ] 1.3: Define `Session` struct with fields: start_time, end_time, duration, status
-  - [ ] 1.4: Define `DailySessionFile` struct for parsing/writing
-  - [ ] 1.5: Implement platform-specific data directory resolution
+- [x] Task 1: Create Storage Module Structure (AC: #1)
+  - [x] 1.1: Create `src-tauri/src/storage/mod.rs`
+  - [x] 1.2: Create `src-tauri/src/storage/sessions.rs`
+  - [x] 1.3: Define `Session` struct with fields: start_time, end_time, duration, status
+  - [x] 1.4: Define `DailySessionFile` struct for parsing/writing
+  - [x] 1.5: Implement platform-specific data directory resolution
 
-- [ ] Task 2: Implement File Writing (AC: #2, #3, #5)
-  - [ ] 2.1: Implement `save_session(session: Session)` function
-  - [ ] 2.2: Generate markdown format per Architecture spec
-  - [ ] 2.3: Handle file creation if doesn't exist
-  - [ ] 2.4: Handle append to existing file
-  - [ ] 2.5: Recalculate Summary section on each write
-  - [ ] 2.6: Use atomic file writes (write to temp, then rename)
+- [x] Task 2: Implement File Writing (AC: #2, #3, #5)
+  - [x] 2.1: Implement `save_session(session: Session)` function
+  - [x] 2.2: Generate markdown format per Architecture spec
+  - [x] 2.3: Handle file creation if doesn't exist
+  - [x] 2.4: Handle append to existing file
+  - [x] 2.5: Recalculate Summary section on each write
+  - [x] 2.6: Use atomic file writes (write to temp, then rename)
 
-- [ ] Task 3: Implement File Reading (AC: #4)
-  - [ ] 3.1: Implement `load_sessions_for_date(date: NaiveDate)` function
-  - [ ] 3.2: Parse markdown format back to Session structs
-  - [ ] 3.3: Handle missing file gracefully (return empty list)
-  - [ ] 3.4: Validate parsed data integrity
+- [x] Task 3: Implement File Reading (AC: #4)
+  - [x] 3.1: Implement `load_sessions_for_date(date: NaiveDate)` function
+  - [x] 3.2: Parse markdown format back to Session structs
+  - [x] 3.3: Handle missing file gracefully (return empty list)
+  - [x] 3.4: Validate parsed data integrity
 
-- [ ] Task 4: Create Tauri Commands (AC: #1, #4)
-  - [ ] 4.1: Create `saveSession` command
-  - [ ] 4.2: Create `getSessionsForDate` command
-  - [ ] 4.3: Create `getTodaySessions` command
-  - [ ] 4.4: Register commands in Tauri builder
+- [x] Task 4: Create Tauri Commands (AC: #1, #4)
+  - [x] 4.1: Create `saveSession` command
+  - [x] 4.2: Create `getSessionsForDate` command
+  - [x] 4.3: Create `getTodaySessions` command
+  - [x] 4.4: Register commands in Tauri builder
 
-- [ ] Task 5: Integrate with Timer (AC: #2)
-  - [ ] 5.1: Call `saveSession` when `SessionComplete` event fires
-  - [ ] 5.2: Call `saveSession` when timer is stopped (interrupted)
-  - [ ] 5.3: Include session type (focus/break) in saved data
+- [x] Task 5: Integrate with Timer (AC: #2)
+  - [x] 5.1: Call `saveSession` when `SessionComplete` event fires
+  - [x] 5.2: Call `saveSession` when timer is stopped (interrupted)
+  - [x] 5.3: Include session type (focus/break) in saved data
 
-- [ ] Task 6: Error Handling (AC: #3)
-  - [ ] 6.1: Handle disk full errors gracefully
-  - [ ] 6.2: Handle permission errors
-  - [ ] 6.3: Implement backup/recovery for corrupt files
-  - [ ] 6.4: Log errors without crashing app
+- [x] Task 6: Error Handling (AC: #3)
+  - [x] 6.1: Handle disk full errors gracefully
+  - [x] 6.2: Handle permission errors
+  - [x] 6.3: Implement backup/recovery for corrupt files
+  - [x] 6.4: Log errors without crashing app
 
-- [ ] Task 7: Testing
-  - [ ] 7.1: Unit tests for markdown generation
-  - [ ] 7.2: Unit tests for markdown parsing
-  - [ ] 7.3: Integration test for save/load cycle
-  - [ ] 7.4: Test atomic write behavior
+- [x] Task 7: Testing
+  - [x] 7.1: Unit tests for markdown generation
+  - [x] 7.2: Unit tests for markdown parsing
+  - [x] 7.3: Integration test for save/load cycle
+  - [x] 7.4: Test atomic write behavior
 
 ## Dev Notes
 
@@ -201,10 +201,35 @@ dirs = "5.0"  # For platform-specific directories
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-sonnet-4-20250514 (Sisyphus)
 
 ### Debug Log References
 
+N/A
+
 ### Completion Notes List
 
+1. Created storage module structure with `mod.rs` and `sessions.rs`
+2. Implemented Session, SessionStatus, SessionType, DailySummary, and DailySessionFile structs
+3. Platform-specific directory resolution using `dirs` crate
+4. Atomic file writes with temp file and rename pattern
+5. Markdown generation matches Architecture spec exactly
+6. Markdown parsing with round-trip support
+7. Tauri commands: `save_session_cmd`, `get_sessions_for_date`, `get_today_sessions`, `save_completed_session`, `save_interrupted_session`
+8. Timer integration: sessions saved on focus/break complete and on stop (interrupted)
+9. Error handling with AppError type and graceful logging
+10. 10 unit tests covering markdown generation, parsing, round-trip, directory creation, and edge cases
+
 ### File List
+
+**Created:**
+- `src-tauri/src/storage/mod.rs`
+- `src-tauri/src/storage/sessions.rs`
+- `src-tauri/src/commands/session.rs`
+
+**Modified:**
+- `src-tauri/Cargo.toml` - Added `dirs = "5.0"` dependency
+- `src-tauri/src/lib.rs` - Added storage module, registered session commands
+- `src-tauri/src/commands/mod.rs` - Added session module
+- `src-tauri/src/commands/timer.rs` - Integrated session saving on complete/stop
+- `src-tauri/src/error.rs` - Added AppError type for storage errors

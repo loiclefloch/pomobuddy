@@ -1,6 +1,6 @@
 # Story 3.2: Track and Persist Completed and Interrupted Sessions
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -42,42 +42,42 @@ So that I have an honest record of my focus time.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Implement Complete Session Recording (AC: #1)
-  - [ ] 1.1: Modify `SessionComplete` handler in timer module
-  - [ ] 1.2: Create Session struct with Complete status
-  - [ ] 1.3: Call `save_session()` from storage module
-  - [ ] 1.4: Emit `SessionSaved` event to frontend
+- [x] Task 1: Implement Complete Session Recording (AC: #1)
+  - [x] 1.1: Modify `SessionComplete` handler in timer module
+  - [x] 1.2: Create Session struct with Complete status
+  - [x] 1.3: Call `save_session()` from storage module
+  - [x] 1.4: Emit `SessionSaved` event to frontend
 
-- [ ] Task 2: Implement Interrupted Session Recording (AC: #2)
-  - [ ] 2.1: Modify `stopTimer` command to detect active session
-  - [ ] 2.2: Calculate elapsed time from session start
-  - [ ] 2.3: Create Session struct with Interrupted status
-  - [ ] 2.4: Save interrupted session to file
-  - [ ] 2.5: No UI guilt messaging (just save quietly)
+- [x] Task 2: Implement Interrupted Session Recording (AC: #2)
+  - [x] 2.1: Modify `stopTimer` command to detect active session
+  - [x] 2.2: Calculate elapsed time from session start
+  - [x] 2.3: Create Session struct with Interrupted status
+  - [x] 2.4: Save interrupted session to file
+  - [x] 2.5: No UI guilt messaging (just save quietly)
 
-- [ ] Task 3: Implement Crash Recovery (AC: #3)
-  - [ ] 3.1: Store active session state to a recovery file
-  - [ ] 3.2: On app startup, check for recovery file
-  - [ ] 3.3: If recovery file exists, save interrupted session
-  - [ ] 3.4: Clean up recovery file after successful save
-  - [ ] 3.5: Handle edge cases (power loss, force quit)
+- [x] Task 3: Implement Crash Recovery (AC: #3)
+  - [x] 3.1: Store active session state to a recovery file
+  - [x] 3.2: On app startup, check for recovery file
+  - [x] 3.3: If recovery file exists, save interrupted session
+  - [x] 3.4: Clean up recovery file after successful save
+  - [x] 3.5: Handle edge cases (power loss, force quit)
 
-- [ ] Task 4: Create Session Management Commands (AC: #4)
-  - [ ] 4.1: Implement `saveSession` Tauri command
-  - [ ] 4.2: Implement `getSessionsForDate` command with date parameter
-  - [ ] 4.3: Implement `getTodaySessions` command
-  - [ ] 4.4: Register all commands in Tauri builder
+- [x] Task 4: Create Session Management Commands (AC: #4)
+  - [x] 4.1: Implement `saveSession` Tauri command
+  - [x] 4.2: Implement `getSessionsForDate` command with date parameter
+  - [x] 4.3: Implement `getTodaySessions` command
+  - [x] 4.4: Register all commands in Tauri builder
 
-- [ ] Task 5: Frontend Integration (AC: #5)
-  - [ ] 5.1: Listen to `SessionSaved` event in stats store
-  - [ ] 5.2: Update session counts in UI
-  - [ ] 5.3: Refresh QuickStats after session save
+- [x] Task 5: Frontend Integration (AC: #5)
+  - [x] 5.1: Listen to `SessionSaved` event in stats store
+  - [x] 5.2: Update session counts in UI
+  - [x] 5.3: Refresh QuickStats after session save
 
-- [ ] Task 6: Testing
-  - [ ] 6.1: Test complete session saves correctly
-  - [ ] 6.2: Test interrupted session saves with correct duration
-  - [ ] 6.3: Test crash recovery scenario
-  - [ ] 6.4: Test session counts are accurate
+- [x] Task 6: Testing
+  - [x] 6.1: Test complete session saves correctly
+  - [x] 6.2: Test interrupted session saves with correct duration
+  - [x] 6.3: Test crash recovery scenario
+  - [x] 6.4: Test session counts are accurate
 
 ## Dev Notes
 
@@ -158,10 +158,49 @@ So that I have an honest record of my focus time.
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+claude-sonnet-4-20250514 (Sisyphus)
 
 ### Debug Log References
 
+N/A
+
 ### Completion Notes List
 
+1. Verified complete session recording (AC #1) - already implemented in Story 3.1, added SessionSaved event emission
+2. Verified interrupted session recording (AC #2) - already implemented in Story 3.1, added SessionSaved event emission
+3. Implemented crash recovery mechanism (AC #3):
+   - Created `src-tauri/src/storage/recovery.rs` module
+   - Recovery file stored at `{data_dir}/.session_recovery.json`
+   - On timer start: creates recovery file with session_start, session_type, last_tick
+   - Every 30 seconds during focus: updates last_tick timestamp
+   - On session complete or stop: deletes recovery file
+   - On app startup: checks for recovery file, saves interrupted session if found
+4. Verified session management commands (AC #4) - all commands existed from Story 3.1
+5. Implemented frontend integration (AC #5):
+   - Added SessionSavedPayload event type in Rust events.rs
+   - Timer emits SessionSaved event with updated session counts after save
+   - useQuickStats hook listens to SessionSaved and updates stats store directly
+6. Added comprehensive tests:
+   - 3 Rust tests for recovery file lifecycle
+   - 5 TypeScript tests for useQuickStats hook SessionSaved event handling
+   - All 25 Rust tests pass, all 158 frontend tests pass
+
 ### File List
+
+**Created:**
+- `src-tauri/src/storage/recovery.rs` - Crash recovery module with recovery file management
+- `src/features/stats/hooks/useQuickStats.test.ts` - Tests for SessionSaved event handling
+
+**Modified:**
+- `src-tauri/src/storage/mod.rs` - Added recovery module export
+- `src-tauri/src/events.rs` - Added SessionSavedPayload struct
+- `src-tauri/src/commands/timer.rs` - Added recovery file integration, SessionSaved event emission
+- `src-tauri/src/lib.rs` - Added startup recovery check
+- `src/features/stats/hooks/useQuickStats.ts` - Added SessionSaved event listener
+
+## Change Log
+
+- 2026-01-29: Implemented Story 3.2 - Track and Persist Completed and Interrupted Sessions
+  - Added crash recovery mechanism with recovery file
+  - Added SessionSaved event for frontend notification
+  - Added useQuickStats hook tests for event handling

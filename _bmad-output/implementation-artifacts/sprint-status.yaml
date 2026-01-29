@@ -41,30 +41,30 @@ story_location: _bmad-output/implementation-artifacts
 
 development_status:
   # Epic 1: Project Foundation & Core Timer
-  epic-1: in-progress
+  epic-1: done
   1-1-initialize-tauri-project-with-react-typescript: done
-  1-2-configure-development-environment-ui-foundation: review
-  1-3-implement-timer-state-management-in-rust-backend: review
-  1-4-create-basic-timer-ui-with-start-pause-stop-controls: review
-  1-5-implement-focus-to-break-auto-transition: review
-  1-6-add-native-notifications-for-session-boundaries: review
+  1-2-configure-development-environment-ui-foundation: done
+  1-3-implement-timer-state-management-in-rust-backend: done
+  1-4-create-basic-timer-ui-with-start-pause-stop-controls: done
+  1-5-implement-focus-to-break-auto-transition: done
+  1-6-add-native-notifications-for-session-boundaries: done
   epic-1-retrospective: optional
 
   # Epic 2: System Tray Integration & Platform Experience
-  epic-2: in-progress
-  2-1-implement-system-tray-icon-with-platform-support: review
-  2-2-create-tray-menu-with-timer-ring-display: review
-  2-3-add-quick-stats-to-tray-menu: review
-  2-4-enable-start-stop-session-from-tray-menu: review
-  2-5-add-main-window-launch-from-tray: review
+  epic-2: done
+  2-1-implement-system-tray-icon-with-platform-support: done
+  2-2-create-tray-menu-with-timer-ring-display: done
+  2-3-add-quick-stats-to-tray-menu: done
+  2-4-enable-start-stop-session-from-tray-menu: done
+  2-5-add-main-window-launch-from-tray: done
   epic-2-retrospective: optional
 
   # Epic 3: Session Persistence & Statistics
-  epic-3: backlog
-  3-1-implement-session-file-storage-in-rust-backend: backlog
-  3-2-track-and-persist-completed-and-interrupted-sessions: backlog
-  3-3-create-daily-statistics-view: backlog
-  3-4-build-session-history-view: backlog
+  epic-3: in-progress
+  3-1-implement-session-file-storage-in-rust-backend: done
+  3-2-track-and-persist-completed-and-interrupted-sessions: review
+  3-3-create-daily-statistics-view: review
+  3-4-build-session-history-view: review
   3-5-implement-weekly-bar-chart-visualization: backlog
   3-6-add-settings-storage-and-configuration: backlog
   epic-3-retrospective: optional

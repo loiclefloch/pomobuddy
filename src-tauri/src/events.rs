@@ -16,3 +16,15 @@ pub struct SessionCompletePayload {
     pub duration_seconds: u32,
     pub completed_at: String,
 }
+
+/// Event payload for session saved notifications (sent to frontend after any session is persisted)
+#[derive(Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SessionSavedPayload {
+    pub session_type: String,
+    pub status: String,
+    pub duration_seconds: u32,
+    pub complete_count: u32,
+    pub partial_count: u32,
+    pub total_focus_minutes: u32,
+}

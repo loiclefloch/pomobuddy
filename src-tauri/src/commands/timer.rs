@@ -1,13 +1,29 @@
 use crate::error::TimerError;
-use crate::events::{SessionCompletePayload, TimerTickPayload};
+use crate::events::{SessionCompletePayload, SessionSavedPayload, TimerTickPayload};
 use crate::notifications::{send_break_complete_notification, send_focus_complete_notification};
 use crate::state::{TimerState, TimerStateWrapper, TimerStatus, BREAK_DURATION_SECONDS, FOCUS_DURATION_SECONDS};
+use crate::storage::recovery::{create_recovery_file, delete_recovery_file, update_recovery_tick};
+use crate::storage::sessions::{save_session, Session, SessionStatus, SessionType, get_today_summary};
 use crate::tray::update_tray_icon;
-use chrono::Utc;
+use chrono::{Local, Utc};
 use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, State};
+
+fn emit_session_saved(app: &AppHandle, session_type: SessionType, status: SessionStatus, duration_seconds: u32) {
+    if let Ok(summary) = get_today_summary() {
+        let payload = SessionSavedPayload {
+            session_type: session_type.as_str().to_string(),
+            status: status.as_str().to_string(),
+            duration_seconds,
+            complete_count: summary.complete_count,
+            partial_count: summary.partial_count,
+            total_focus_minutes: summary.total_focus_minutes,
+        };
+        let _ = app.emit("SessionSaved", payload);
+    }
+}
 
 #[tauri::command]
 pub fn start_timer(
@@ -29,6 +45,11 @@ pub fn start_timer(
 
     timer.start_focus();
     update_tray_icon(&app, "focus");
+    
+    if let Err(e) = create_recovery_file(SessionType::Focus) {
+        eprintln!("Failed to create recovery file: {}", e);
+    }
+    
     let current_state = timer.clone();
     drop(timer);
 
@@ -85,8 +106,43 @@ pub fn stop_timer(state: State<'_, TimerStateWrapper>, app: AppHandle) -> Result
         .lock()
         .map_err(|_| TimerError::LockPoisoned.to_string())?;
 
+    // Save interrupted session if timer was active (focus or paused focus)
+    let is_active_focus_session = matches!(timer.status, TimerStatus::Focus | TimerStatus::Paused) 
+        && timer.paused_status != Some(TimerStatus::Break);
+    
+    if let (Some(start_time), true) = (timer.session_start_time, is_active_focus_session) {
+        let session_type = if timer.status == TimerStatus::Paused {
+            match timer.paused_status {
+                Some(TimerStatus::Focus) => SessionType::Focus,
+                Some(TimerStatus::Break) => SessionType::Break,
+                _ => SessionType::Focus,
+            }
+        } else {
+            match timer.status {
+                TimerStatus::Focus => SessionType::Focus,
+                TimerStatus::Break => SessionType::Break,
+                _ => SessionType::Focus,
+            }
+        };
+
+        let start_local = start_time.with_timezone(&Local);
+        let end_local = Local::now();
+        let duration_seconds = (end_local - start_local).num_seconds().max(0) as u32;
+        let session = Session::new(start_local, end_local, SessionStatus::Interrupted, session_type);
+        
+        if let Err(e) = save_session(session) {
+            eprintln!("Failed to save interrupted session: {}", e);
+        } else {
+            emit_session_saved(&app, session_type, SessionStatus::Interrupted, duration_seconds);
+        }
+    }
+
     timer.stop();
     update_tray_icon(&app, "idle");
+    
+    if let Err(e) = delete_recovery_file() {
+        eprintln!("Failed to delete recovery file: {}", e);
+    }
 
     Ok(timer.clone())
 }
@@ -109,6 +165,8 @@ fn spawn_timer_thread(
     thread::spawn(move || {
         let tick_interval = Duration::from_secs(1);
         let mut next_tick = Instant::now() + tick_interval;
+        let mut tick_count: u32 = 0;
+        const RECOVERY_UPDATE_INTERVAL: u32 = 30;
 
         while running.load(std::sync::atomic::Ordering::SeqCst) {
             let now = Instant::now();
@@ -127,11 +185,17 @@ fn spawn_timer_thread(
             }
 
             if timer.tick() {
+                tick_count += 1;
+                
                 let payload = TimerTickPayload {
                     remaining_seconds: timer.remaining_seconds,
                     status: timer.status.as_str().to_string(),
                 };
                 let _ = app.emit("TimerTick", payload);
+                
+                if tick_count % RECOVERY_UPDATE_INTERVAL == 0 && timer.status == TimerStatus::Focus {
+                    let _ = update_recovery_tick();
+                }
             }
 
             if timer.is_complete() {
@@ -141,6 +205,27 @@ fn spawn_timer_thread(
                     TimerStatus::Break => BREAK_DURATION_SECONDS,
                     _ => 0,
                 };
+
+                if let Some(start_time) = timer.session_start_time {
+                    let storage_session_type = match timer.status {
+                        TimerStatus::Focus => SessionType::Focus,
+                        TimerStatus::Break => SessionType::Break,
+                        _ => SessionType::Focus,
+                    };
+                    let start_local = start_time.with_timezone(&Local);
+                    let end_local = Local::now();
+                    let session = Session::new(start_local, end_local, SessionStatus::Complete, storage_session_type);
+                    
+                    if let Err(e) = save_session(session) {
+                        eprintln!("Failed to save completed session: {}", e);
+                    } else {
+                        emit_session_saved(&app, storage_session_type, SessionStatus::Complete, duration);
+                    }
+                }
+                
+                if timer.status == TimerStatus::Focus {
+                    let _ = delete_recovery_file();
+                }
 
                 let complete_payload = SessionCompletePayload {
                     session_type: session_type.clone(),
@@ -163,6 +248,7 @@ fn spawn_timer_thread(
                     timer.stop();
                     update_tray_icon(&app, "idle");
                     running.store(false, std::sync::atomic::Ordering::SeqCst);
+                    let _ = delete_recovery_file();
                     let tick_payload = TimerTickPayload {
                         remaining_seconds: 0,
                         status: "idle".to_string(),

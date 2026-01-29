@@ -9,6 +9,15 @@ interface QuickStatsResponse {
   todayFocusMinutes: number;
 }
 
+interface SessionSavedPayload {
+  sessionType: string;
+  status: string;
+  durationSeconds: number;
+  completeCount: number;
+  partialCount: number;
+  totalFocusMinutes: number;
+}
+
 export function useQuickStats() {
   const { currentStreak, todaySessions, todayFocusMinutes, setStats } =
     useStatsStore();
@@ -24,7 +33,18 @@ export function useQuickStats() {
       })
       .catch(console.error);
 
-    const unlisten = listen("SessionComplete", () => {
+    const unlistenSessionSaved = listen<SessionSavedPayload>(
+      "SessionSaved",
+      (event) => {
+        const payload = event.payload;
+        setStats({
+          todaySessions: payload.completeCount + payload.partialCount,
+          todayFocusMinutes: payload.totalFocusMinutes,
+        });
+      }
+    );
+
+    const unlistenSessionComplete = listen("SessionComplete", () => {
       invoke<QuickStatsResponse>("get_quick_stats")
         .then((stats) => {
           setStats({
@@ -37,7 +57,8 @@ export function useQuickStats() {
     });
 
     return () => {
-      unlisten.then((fn) => fn());
+      unlistenSessionSaved.then((fn) => fn());
+      unlistenSessionComplete.then((fn) => fn());
     };
   }, [setStats]);
 

@@ -1,5 +1,6 @@
 import { Coffee } from "lucide-react";
 import { TimerDisplay, TimerControls, useTimer } from "@/features/timer";
+import { TodayStats, SessionHistoryContainer } from "@/features/stats/components";
 
 function App() {
   const { start, pause, resume, stop } = useTimer();
@@ -19,6 +20,15 @@ function App() {
           onResume={resume}
           onStop={stop}
         />
+      </div>
+
+      <div className="mt-8">
+        <TodayStats />
+      </div>
+
+      <div className="mt-6 w-full max-w-md">
+        <h2 className="text-lg font-medium text-cozy-text mb-4">Session History</h2>
+        <SessionHistoryContainer />
       </div>
 
       <p className="mt-8 text-sm text-cozy-muted">Your cozy focus companion</p>

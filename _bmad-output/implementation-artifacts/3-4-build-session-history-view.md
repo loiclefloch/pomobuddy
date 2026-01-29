@@ -1,6 +1,6 @@
 # Story 3.4: Build Session History View
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -43,48 +43,48 @@ So that I can review my past focus sessions.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create SessionHistoryItem Component (AC: #1, #4)
-  - [ ] 1.1: Create `src/features/stats/components/SessionHistoryItem.tsx`
-  - [ ] 1.2: Display time range (HH:MM - HH:MM)
-  - [ ] 1.3: Display duration (Xm)
-  - [ ] 1.4: Display status indicator (✓ or ○)
-  - [ ] 1.5: Style complete vs interrupted differently
+- [x] Task 1: Create SessionHistoryItem Component (AC: #1, #4)
+  - [x] 1.1: Create `src/features/stats/components/SessionHistoryItem.tsx`
+  - [x] 1.2: Display time range (HH:MM - HH:MM)
+  - [x] 1.3: Display duration (Xm)
+  - [x] 1.4: Display status indicator (✓ or ○)
+  - [x] 1.5: Style complete vs interrupted differently
 
-- [ ] Task 2: Create DaySection Component (AC: #3)
-  - [ ] 2.1: Create `src/features/stats/components/DaySection.tsx`
-  - [ ] 2.2: Display date header with smart formatting
-  - [ ] 2.3: List SessionHistoryItems for that day
-  - [ ] 2.4: Show daily summary (total sessions, time)
+- [x] Task 2: Create DaySection Component (AC: #3)
+  - [x] 2.1: Create `src/features/stats/components/DaySection.tsx`
+  - [x] 2.2: Display date header with smart formatting
+  - [x] 2.3: List SessionHistoryItems for that day
+  - [x] 2.4: Show daily summary (total sessions, time)
 
-- [ ] Task 3: Create SessionHistory Component (AC: #1, #5)
-  - [ ] 3.1: Create `src/features/stats/components/SessionHistory.tsx`
-  - [ ] 3.2: Group sessions by date into DaySections
-  - [ ] 3.3: Implement smooth scrolling container
-  - [ ] 3.4: Add "Load More" button or infinite scroll
+- [x] Task 3: Create SessionHistory Component (AC: #1, #5)
+  - [x] 3.1: Create `src/features/stats/components/SessionHistory.tsx`
+  - [x] 3.2: Group sessions by date into DaySections
+  - [x] 3.3: Implement smooth scrolling container
+  - [x] 3.4: Add "Load More" button or infinite scroll
 
-- [ ] Task 4: Implement Backend Command (AC: #2)
-  - [ ] 4.1: Create `getSessionHistory` command
-  - [ ] 4.2: Accept `days` parameter (default 7)
-  - [ ] 4.3: Read session files for date range
-  - [ ] 4.4: Sort by date desc, then time desc
-  - [ ] 4.5: Return paginated response
+- [x] Task 4: Implement Backend Command (AC: #2)
+  - [x] 4.1: Create `getSessionHistory` command
+  - [x] 4.2: Accept `days` parameter (default 7)
+  - [x] 4.3: Read session files for date range
+  - [x] 4.4: Sort by date desc, then time desc
+  - [x] 4.5: Return paginated response
 
-- [ ] Task 5: Create useSessionHistory Hook (AC: #2)
-  - [ ] 5.1: Create `src/features/stats/hooks/useSessionHistory.ts`
-  - [ ] 5.2: Fetch history via IPC
-  - [ ] 5.3: Handle pagination state
-  - [ ] 5.4: Cache loaded data
+- [x] Task 5: Create useSessionHistory Hook (AC: #2)
+  - [x] 5.1: Create `src/features/stats/hooks/useSessionHistory.ts`
+  - [x] 5.2: Fetch history via IPC
+  - [x] 5.3: Handle pagination state
+  - [x] 5.4: Cache loaded data
 
-- [ ] Task 6: Smart Date Formatting (AC: #3)
-  - [ ] 6.1: "Today" for current date
-  - [ ] 6.2: "Yesterday" for previous day
-  - [ ] 6.3: "Mon, Jan 27" for older dates
-  - [ ] 6.4: Add to `src/shared/lib/dateUtils.ts`
+- [x] Task 6: Smart Date Formatting (AC: #3)
+  - [x] 6.1: "Today" for current date
+  - [x] 6.2: "Yesterday" for previous day
+  - [x] 6.3: "Mon, Jan 27" for older dates
+  - [x] 6.4: Add to `src/shared/lib/dateUtils.ts` (already existed)
 
-- [ ] Task 7: Add to Main Window
-  - [ ] 7.1: Add SessionHistory to main window stats view
-  - [ ] 7.2: Position below TodayStats
-  - [ ] 7.3: Apply cozy styling
+- [x] Task 7: Add to Main Window
+  - [x] 7.1: Add SessionHistory to main window stats view
+  - [x] 7.2: Position below TodayStats
+  - [x] 7.3: Apply cozy styling
 
 ## Dev Notes
 
@@ -169,10 +169,47 @@ struct DayHistory {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude (Anthropic) - Atlas Orchestrator
 
 ### Debug Log References
 
+No issues encountered during implementation.
+
 ### Completion Notes List
 
+- **Task 1 Complete**: Created SessionHistoryItem component with 12 passing tests. Displays time range, duration, and status indicator with correct styling.
+- **Task 2 Complete**: Created DaySection component with 9 passing tests. Groups sessions by date with smart date labels and daily summary.
+- **Task 3 Complete**: Created SessionHistory component with 9 passing tests. Implements scrollable container with Load More pagination.
+- **Task 4 Complete**: Implemented `get_session_history` Rust command. Returns paginated session history with date grouping, sorted by date/time descending.
+- **Task 5 Complete**: Created useSessionHistory hook with 7 passing tests. Handles IPC fetching, pagination state, and event listeners for real-time updates.
+- **Task 6 Complete**: Smart date formatting already existed in dateUtils.ts (getDateLabel function). Used in DaySection component.
+- **Task 7 Complete**: Added SessionHistoryContainer to App.tsx below TodayStats with cozy styling.
+
 ### File List
+
+**Created:**
+- `src/features/stats/components/SessionHistoryItem.tsx`
+- `src/features/stats/components/SessionHistoryItem.test.tsx`
+- `src/features/stats/components/DaySection.tsx`
+- `src/features/stats/components/DaySection.test.tsx`
+- `src/features/stats/components/SessionHistory.tsx`
+- `src/features/stats/components/SessionHistory.test.tsx`
+- `src/features/stats/components/SessionHistoryContainer.tsx`
+- `src/features/stats/hooks/useSessionHistory.ts`
+- `src/features/stats/hooks/useSessionHistory.test.ts`
+
+**Modified:**
+- `src-tauri/src/commands/stats.rs` - Added get_session_history command and supporting types
+- `src-tauri/src/lib.rs` - Registered get_session_history command
+- `src/features/stats/components/index.ts` - Exported new components
+- `src/App.tsx` - Added SessionHistoryContainer to main window
+
+## Change Log
+
+- **2026-01-29**: Implemented Story 3.4 - Build Session History View
+  - Created SessionHistoryItem, DaySection, and SessionHistory React components
+  - Implemented get_session_history Rust backend command
+  - Created useSessionHistory hook for data fetching
+  - Added SessionHistoryContainer to main window
+  - All 222 frontend tests pass, 25 Rust tests pass
+  - Production build successful
