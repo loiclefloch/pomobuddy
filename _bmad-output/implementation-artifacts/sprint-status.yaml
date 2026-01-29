@@ -1,0 +1,99 @@
+# generated: 2026-01-29
+# project: test-bmad
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-01-29
+project: test-bmad
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Project Foundation & Core Timer
+  epic-1: in-progress
+  1-1-initialize-tauri-project-with-react-typescript: in-progress
+  1-2-configure-development-environment-ui-foundation: backlog
+  1-3-implement-timer-state-management-in-rust-backend: backlog
+  1-4-create-basic-timer-ui-with-start-pause-stop-controls: backlog
+  1-5-implement-focus-to-break-auto-transition: backlog
+  1-6-add-native-notifications-for-session-boundaries: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: System Tray Integration & Platform Experience
+  epic-2: backlog
+  2-1-implement-system-tray-icon-with-platform-support: backlog
+  2-2-create-tray-menu-with-timer-ring-display: backlog
+  2-3-add-quick-stats-to-tray-menu: backlog
+  2-4-enable-start-stop-session-from-tray-menu: backlog
+  2-5-add-main-window-launch-from-tray: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Session Persistence & Statistics
+  epic-3: backlog
+  3-1-implement-session-file-storage-in-rust-backend: backlog
+  3-2-track-and-persist-completed-and-interrupted-sessions: backlog
+  3-3-create-daily-statistics-view: backlog
+  3-4-build-session-history-view: backlog
+  3-5-implement-weekly-bar-chart-visualization: backlog
+  3-6-add-settings-storage-and-configuration: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Streaks & Achievements
+  epic-4: backlog
+  4-1-implement-streak-tracking-logic: backlog
+  4-2-display-current-streak-in-ui: backlog
+  4-3-define-achievement-system-and-badges: backlog
+  4-4-implement-achievement-unlock-detection: backlog
+  4-5-create-achievement-gallery-view: backlog
+  4-6-build-full-screen-celebration-overlay: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Cozy UI & Character System
+  epic-5: backlog
+  5-1-implement-cozy-design-system-theme: backlog
+  5-2-create-character-sprite-system: backlog
+  5-3-add-character-assets-for-all-5-characters: backlog
+  5-4-implement-character-state-animations: backlog
+  5-5-add-lo-fi-ambient-audio-system: backlog
+  5-6-add-session-boundary-sound-effects: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Onboarding & First-Run Experience
+  epic-6: backlog
+  6-1-detect-first-run-state: backlog
+  6-2-create-welcome-screen: backlog
+  6-3-build-character-selection-step: backlog
+  6-4-create-quick-tutorial-walkthrough: backlog
+  6-5-prompt-first-focus-session: backlog
+  epic-6-retrospective: optional
