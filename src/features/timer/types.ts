@@ -7,7 +7,7 @@ export interface TimerState {
 }
 
 export interface TimerTickPayload {
-  remaining: number;
+  remainingSeconds: number;
   status: TimerStatus;
 }
 

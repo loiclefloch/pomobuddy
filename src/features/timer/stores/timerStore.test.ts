@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { useTimerStore } from "./timerStore";
+import {
+  useTimerStore,
+  selectIsBreak,
+  selectIsFocus,
+  selectIsActive,
+  selectIsRunning,
+} from "./timerStore";
 
 describe("timerStore", () => {
   beforeEach(() => {
@@ -92,6 +98,78 @@ describe("timerStore", () => {
       const state = useTimerStore.getState();
       expect(state.status).toBe("idle");
       expect(state.remainingSeconds).toBe(0);
+    });
+  });
+
+  describe("derived selectors", () => {
+    describe("selectIsBreak", () => {
+      it("returns true when status is break", () => {
+        useTimerStore.getState().setStatus("break");
+        expect(selectIsBreak(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns false when status is focus", () => {
+        useTimerStore.getState().setStatus("focus");
+        expect(selectIsBreak(useTimerStore.getState())).toBe(false);
+      });
+
+      it("returns false when status is idle", () => {
+        expect(selectIsBreak(useTimerStore.getState())).toBe(false);
+      });
+    });
+
+    describe("selectIsFocus", () => {
+      it("returns true when status is focus", () => {
+        useTimerStore.getState().setStatus("focus");
+        expect(selectIsFocus(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns false when status is break", () => {
+        useTimerStore.getState().setStatus("break");
+        expect(selectIsFocus(useTimerStore.getState())).toBe(false);
+      });
+    });
+
+    describe("selectIsActive", () => {
+      it("returns true when status is focus", () => {
+        useTimerStore.getState().setStatus("focus");
+        expect(selectIsActive(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns true when status is break", () => {
+        useTimerStore.getState().setStatus("break");
+        expect(selectIsActive(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns false when status is idle", () => {
+        expect(selectIsActive(useTimerStore.getState())).toBe(false);
+      });
+
+      it("returns false when status is paused", () => {
+        useTimerStore.getState().setStatus("paused");
+        expect(selectIsActive(useTimerStore.getState())).toBe(false);
+      });
+    });
+
+    describe("selectIsRunning", () => {
+      it("returns true when status is focus", () => {
+        useTimerStore.getState().setStatus("focus");
+        expect(selectIsRunning(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns true when status is break", () => {
+        useTimerStore.getState().setStatus("break");
+        expect(selectIsRunning(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns true when status is paused", () => {
+        useTimerStore.getState().setStatus("paused");
+        expect(selectIsRunning(useTimerStore.getState())).toBe(true);
+      });
+
+      it("returns false when status is idle", () => {
+        expect(selectIsRunning(useTimerStore.getState())).toBe(false);
+      });
     });
   });
 });

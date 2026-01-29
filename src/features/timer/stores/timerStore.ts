@@ -26,3 +26,10 @@ export const useTimerStore = create<TimerStoreState>((set) => ({
 
   reset: () => set({ status: "idle", remainingSeconds: 0 }),
 }));
+
+export const selectIsBreak = (state: TimerStoreState) => state.status === "break";
+export const selectIsFocus = (state: TimerStoreState) => state.status === "focus";
+export const selectIsActive = (state: TimerStoreState) =>
+  state.status === "focus" || state.status === "break";
+export const selectIsRunning = (state: TimerStoreState) =>
+  state.status === "focus" || state.status === "break" || state.status === "paused";

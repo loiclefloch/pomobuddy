@@ -3,29 +3,78 @@ import { formatDuration } from "@/shared/lib/formatTime";
 import { cn } from "@/shared/lib/utils";
 import type { TimerStatus } from "../types";
 
-const statusStyles: Record<TimerStatus, string> = {
-  idle: "text-cozy-muted",
-  focus: "text-cozy-accent",
-  break: "text-cozy-success",
-  paused: "text-cozy-muted opacity-70",
+const statusConfig: Record<
+  TimerStatus,
+  { timeClass: string; labelClass: string; label: string }
+> = {
+  idle: {
+    timeClass: "text-cozy-muted",
+    labelClass: "text-cozy-muted",
+    label: "Ready",
+  },
+  focus: {
+    timeClass: "text-cozy-accent",
+    labelClass: "text-cozy-accent",
+    label: "Focus",
+  },
+  break: {
+    timeClass: "text-cozy-success",
+    labelClass: "text-cozy-success",
+    label: "Break",
+  },
+  paused: {
+    timeClass: "text-cozy-muted opacity-70",
+    labelClass: "text-cozy-muted",
+    label: "Paused",
+  },
 };
+
+function getAriaLabel(status: TimerStatus, formattedTime: string): string {
+  const minutes = formattedTime.split(":")[0];
+  const seconds = formattedTime.split(":")[1];
+
+  if (status === "idle") {
+    return "Timer ready to start";
+  }
+
+  if (status === "break") {
+    return `Break time remaining: ${minutes} minutes ${seconds} seconds`;
+  }
+
+  if (status === "focus") {
+    return `Focus time remaining: ${minutes} minutes ${seconds} seconds`;
+  }
+
+  return `Timer paused at ${minutes} minutes ${seconds} seconds`;
+}
 
 export function TimerDisplay() {
   const { status, remainingSeconds } = useTimerStore();
+  const formattedTime = formatDuration(remainingSeconds);
+  const config = statusConfig[status];
 
   return (
     <div className="flex flex-col items-center gap-2">
       <time
         className={cn(
-          "font-heading text-7xl tabular-nums tracking-tight",
-          statusStyles[status]
+          "font-heading text-7xl tabular-nums tracking-tight transition-colors duration-300 motion-reduce:transition-none",
+          config.timeClass
         )}
-        aria-label={`Timer: ${formatDuration(remainingSeconds)}`}
+        aria-label={getAriaLabel(status, formattedTime)}
+        aria-live="polite"
       >
-        {formatDuration(remainingSeconds)}
+        {formattedTime}
       </time>
       {status !== "idle" && (
-        <span className="text-sm text-cozy-muted capitalize">{status}</span>
+        <span
+          className={cn(
+            "text-sm font-medium transition-colors duration-300 motion-reduce:transition-none",
+            config.labelClass
+          )}
+          aria-hidden="true"
+        >
+          {config.label}
+        </span>
       )}
     </div>
   );

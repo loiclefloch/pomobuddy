@@ -52,7 +52,7 @@ describe("useTimer", () => {
       renderHook(() => useTimer());
 
       await waitFor(() => {
-        expect(mockInvoke).toHaveBeenCalledWith("getTimerState");
+        expect(mockInvoke).toHaveBeenCalledWith("get_timer_state");
       });
     });
   });
@@ -65,7 +65,7 @@ describe("useTimer", () => {
         await result.current.start();
       });
 
-      expect(mockInvoke).toHaveBeenCalledWith("startTimer");
+      expect(mockInvoke).toHaveBeenCalledWith("start_timer");
     });
   });
 
@@ -77,7 +77,7 @@ describe("useTimer", () => {
         await result.current.pause();
       });
 
-      expect(mockInvoke).toHaveBeenCalledWith("pauseTimer");
+      expect(mockInvoke).toHaveBeenCalledWith("pause_timer");
     });
   });
 
@@ -89,7 +89,7 @@ describe("useTimer", () => {
         await result.current.resume();
       });
 
-      expect(mockInvoke).toHaveBeenCalledWith("resumeTimer");
+      expect(mockInvoke).toHaveBeenCalledWith("resume_timer");
     });
   });
 
@@ -101,7 +101,7 @@ describe("useTimer", () => {
         await result.current.stop();
       });
 
-      expect(mockInvoke).toHaveBeenCalledWith("stopTimer");
+      expect(mockInvoke).toHaveBeenCalledWith("stop_timer");
     });
 
     it("resets store state after stop", async () => {
@@ -138,7 +138,7 @@ describe("useTimer", () => {
 
       act(() => {
         tickHandler?.({
-          payload: { remaining: 1450, status: "focus" },
+          payload: { remainingSeconds: 1450, status: "focus" },
         });
       });
 
@@ -146,7 +146,41 @@ describe("useTimer", () => {
       expect(useTimerStore.getState().status).toBe("focus");
     });
 
-    it("resets store on SessionComplete event", async () => {
+    it("resets store on SessionComplete event with break sessionType", async () => {
+      let completeHandler: ((event: { payload: unknown }) => void) | null =
+        null;
+
+      mockListen.mockImplementation(async (eventName, handler) => {
+        if (eventName === "SessionComplete") {
+          completeHandler = handler as (event: { payload: unknown }) => void;
+        }
+        return () => {};
+      });
+
+      useTimerStore.getState().setStatus("break");
+      useTimerStore.getState().setRemainingSeconds(300);
+
+      renderHook(() => useTimer());
+
+      await waitFor(() => {
+        expect(completeHandler).not.toBeNull();
+      });
+
+      act(() => {
+        completeHandler?.({
+          payload: {
+            sessionType: "break",
+            durationSeconds: 300,
+            completedAt: "2026-01-29T12:00:00Z",
+          },
+        });
+      });
+
+      expect(useTimerStore.getState().status).toBe("idle");
+      expect(useTimerStore.getState().remainingSeconds).toBe(0);
+    });
+
+    it("does NOT reset store on SessionComplete event with focus sessionType", async () => {
       let completeHandler: ((event: { payload: unknown }) => void) | null =
         null;
 
@@ -176,8 +210,37 @@ describe("useTimer", () => {
         });
       });
 
-      expect(useTimerStore.getState().status).toBe("idle");
-      expect(useTimerStore.getState().remainingSeconds).toBe(0);
+      expect(useTimerStore.getState().status).toBe("focus");
+      expect(useTimerStore.getState().remainingSeconds).toBe(1200);
+    });
+
+    it("transitions to break state via TimerTick after focus completes", async () => {
+      let tickHandler: ((event: { payload: unknown }) => void) | null = null;
+
+      mockListen.mockImplementation(async (eventName, handler) => {
+        if (eventName === "TimerTick") {
+          tickHandler = handler as (event: { payload: unknown }) => void;
+        }
+        return () => {};
+      });
+
+      useTimerStore.getState().setStatus("focus");
+      useTimerStore.getState().setRemainingSeconds(1);
+
+      renderHook(() => useTimer());
+
+      await waitFor(() => {
+        expect(tickHandler).not.toBeNull();
+      });
+
+      act(() => {
+        tickHandler?.({
+          payload: { remainingSeconds: 300, status: "break" },
+        });
+      });
+
+      expect(useTimerStore.getState().status).toBe("break");
+      expect(useTimerStore.getState().remainingSeconds).toBe(300);
     });
   });
 

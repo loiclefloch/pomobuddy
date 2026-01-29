@@ -38,33 +38,66 @@ describe("TimerDisplay", () => {
     it("does not show status label when idle", () => {
       useTimerStore.getState().setStatus("idle");
       render(<TimerDisplay />);
-      expect(screen.queryByText("idle")).not.toBeInTheDocument();
+      expect(screen.queryByText("Ready")).not.toBeInTheDocument();
     });
 
-    it("shows focus label when in focus mode", () => {
+    it("shows Focus label when in focus mode", () => {
       useTimerStore.getState().setStatus("focus");
       render(<TimerDisplay />);
-      expect(screen.getByText("focus")).toBeInTheDocument();
+      expect(screen.getByText("Focus")).toBeInTheDocument();
     });
 
-    it("shows break label when in break mode", () => {
+    it("shows Break label when in break mode", () => {
       useTimerStore.getState().setStatus("break");
       render(<TimerDisplay />);
-      expect(screen.getByText("break")).toBeInTheDocument();
+      expect(screen.getByText("Break")).toBeInTheDocument();
     });
 
-    it("shows paused label when paused", () => {
+    it("shows Paused label when paused", () => {
       useTimerStore.getState().setStatus("paused");
       render(<TimerDisplay />);
-      expect(screen.getByText("paused")).toBeInTheDocument();
+      expect(screen.getByText("Paused")).toBeInTheDocument();
     });
   });
 
   describe("accessibility", () => {
-    it("has accessible time element with aria-label", () => {
+    it("announces idle state as ready to start", () => {
+      useTimerStore.getState().setStatus("idle");
+      render(<TimerDisplay />);
+      expect(screen.getByLabelText("Timer ready to start")).toBeInTheDocument();
+    });
+
+    it("announces focus time with minutes and seconds", () => {
+      useTimerStore.getState().setStatus("focus");
       useTimerStore.getState().setRemainingSeconds(1500);
       render(<TimerDisplay />);
-      expect(screen.getByLabelText("Timer: 25:00")).toBeInTheDocument();
+      expect(
+        screen.getByLabelText("Focus time remaining: 25 minutes 00 seconds")
+      ).toBeInTheDocument();
+    });
+
+    it("announces break time with minutes and seconds", () => {
+      useTimerStore.getState().setStatus("break");
+      useTimerStore.getState().setRemainingSeconds(300);
+      render(<TimerDisplay />);
+      expect(
+        screen.getByLabelText("Break time remaining: 05 minutes 00 seconds")
+      ).toBeInTheDocument();
+    });
+
+    it("announces paused state with current time", () => {
+      useTimerStore.getState().setStatus("paused");
+      useTimerStore.getState().setRemainingSeconds(720);
+      render(<TimerDisplay />);
+      expect(
+        screen.getByLabelText("Timer paused at 12 minutes 00 seconds")
+      ).toBeInTheDocument();
+    });
+
+    it("has aria-live for screen reader updates", () => {
+      render(<TimerDisplay />);
+      const timeElement = screen.getByRole("time");
+      expect(timeElement).toHaveAttribute("aria-live", "polite");
     });
   });
 
@@ -72,22 +105,37 @@ describe("TimerDisplay", () => {
     it("applies correct class for idle status", () => {
       useTimerStore.getState().setStatus("idle");
       render(<TimerDisplay />);
-      const timeElement = screen.getByLabelText(/Timer:/);
+      const timeElement = screen.getByRole("time");
       expect(timeElement).toHaveClass("text-cozy-muted");
     });
 
     it("applies correct class for focus status", () => {
       useTimerStore.getState().setStatus("focus");
       render(<TimerDisplay />);
-      const timeElement = screen.getByLabelText(/Timer:/);
+      const timeElement = screen.getByRole("time");
       expect(timeElement).toHaveClass("text-cozy-accent");
     });
 
     it("applies correct class for break status", () => {
       useTimerStore.getState().setStatus("break");
       render(<TimerDisplay />);
-      const timeElement = screen.getByLabelText(/Timer:/);
+      const timeElement = screen.getByRole("time");
       expect(timeElement).toHaveClass("text-cozy-success");
+    });
+
+    it("has transition classes for smooth color changes", () => {
+      useTimerStore.getState().setStatus("focus");
+      render(<TimerDisplay />);
+      const timeElement = screen.getByRole("time");
+      expect(timeElement).toHaveClass("transition-colors");
+      expect(timeElement).toHaveClass("duration-300");
+    });
+
+    it("respects reduced motion preference", () => {
+      useTimerStore.getState().setStatus("focus");
+      render(<TimerDisplay />);
+      const timeElement = screen.getByRole("time");
+      expect(timeElement).toHaveClass("motion-reduce:transition-none");
     });
   });
 });

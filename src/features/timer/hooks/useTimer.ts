@@ -21,19 +21,21 @@ export function useTimer() {
     const setup = async () => {
       unlistenTick = await listen<TimerTickPayload>("TimerTick", (event) => {
         const store = useTimerStore.getState();
-        store.setRemainingSeconds(event.payload.remaining);
+        store.setRemainingSeconds(event.payload.remainingSeconds);
         store.setStatus(event.payload.status);
       });
 
       unlistenComplete = await listen<SessionCompletePayload>(
         "SessionComplete",
-        () => {
-          useTimerStore.getState().reset();
-        }
+        (event) => {
+          if (event.payload.sessionType === "break") {
+            useTimerStore.getState().reset();
+          }
+        },
       );
 
       try {
-        const state = await invoke<TimerState>("getTimerState");
+        const state = await invoke<TimerState>("get_timer_state");
         useTimerStore.getState().setStatus(state.status);
         useTimerStore.getState().setRemainingSeconds(state.remainingSeconds);
       } catch {}
@@ -48,19 +50,19 @@ export function useTimer() {
   }, []);
 
   const start = useCallback(async () => {
-    await invoke("startTimer");
+    await invoke("start_timer");
   }, []);
 
   const pause = useCallback(async () => {
-    await invoke("pauseTimer");
+    await invoke("pause_timer");
   }, []);
 
   const resume = useCallback(async () => {
-    await invoke("resumeTimer");
+    await invoke("resume_timer");
   }, []);
 
   const stop = useCallback(async () => {
-    await invoke("stopTimer");
+    await invoke("stop_timer");
     reset();
   }, [reset]);
 
