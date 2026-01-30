@@ -3,8 +3,9 @@ import { Coffee, Trophy, ArrowLeft } from "lucide-react";
 import { listen } from "@tauri-apps/api/event";
 import { TimerDisplay, TimerControls, useTimer } from "@/features/timer";
 import { TodayStats, SessionHistoryContainer, WeeklyBarChart } from "@/features/stats/components";
-import { StreakCard, AchievementGallery } from "@/features/achievements/components";
+import { StreakCard, AchievementGallery, CelebrationOverlay } from "@/features/achievements/components";
 import { useStreak, useAchievements } from "@/features/achievements/hooks";
+import { useAchievementStore, type AchievementUnlockedPayload } from "@/features/achievements/stores/achievementStore";
 
 type AppView = "timer" | "achievements";
 
@@ -71,22 +72,33 @@ function AchievementsView({ onBack }: { onBack: () => void }) {
 
 function App() {
   const [view, setView] = useState<AppView>("timer");
+  const addToCelebrationQueue = useAchievementStore((state) => state.addToCelebrationQueue);
 
   useEffect(() => {
     const unlistenShowAchievements = listen("show-achievements", () => {
       setView("achievements");
     });
 
+    const unlistenAchievementUnlocked = listen<AchievementUnlockedPayload>(
+      "achievement-unlocked",
+      (event) => {
+        addToCelebrationQueue(event.payload);
+      }
+    );
+
     return () => {
       unlistenShowAchievements.then((fn) => fn());
+      unlistenAchievementUnlocked.then((fn) => fn());
     };
-  }, []);
+  }, [addToCelebrationQueue]);
 
   const handleShowAchievements = () => setView("achievements");
   const handleBackToTimer = () => setView("timer");
 
   return (
-    <main className="min-h-screen bg-cozy-bg flex flex-col items-center p-8">
+    <>
+      <CelebrationOverlay />
+      <main className="min-h-screen bg-cozy-bg flex flex-col items-center p-8">
       {view === "timer" && (
         <>
           <div className="flex items-center gap-3 mb-8">
@@ -109,7 +121,8 @@ function App() {
       )}
 
       {view === "achievements" && <AchievementsView onBack={handleBackToTimer} />}
-    </main>
+      </main>
+    </>
   );
 }
 

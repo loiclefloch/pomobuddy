@@ -1,6 +1,6 @@
 # Story 4.6: Build Full-Screen Celebration Overlay
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -55,48 +55,48 @@ So that my accomplishments feel special and earned.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create CelebrationOverlay Component (AC: #1, #2)
-  - [ ] 1.1: Create `src/features/achievements/components/CelebrationOverlay.tsx`
-  - [ ] 1.2: Full-screen overlay with dark background
-  - [ ] 1.3: Centered achievement display
-  - [ ] 1.4: "Continue" button
-  - [ ] 1.5: Entrance/exit animations
+- [x] Task 1: Create CelebrationOverlay Component (AC: #1, #2)
+  - [x] 1.1: Create `src/features/achievements/components/CelebrationOverlay.tsx`
+  - [x] 1.2: Full-screen overlay with dark background
+  - [x] 1.3: Centered achievement display
+  - [x] 1.4: "Continue" button
+  - [x] 1.5: Entrance/exit animations
 
-- [ ] Task 2: Create ParticleSystem Component (AC: #3)
-  - [ ] 2.1: Create `src/features/achievements/components/ParticleSystem.tsx`
-  - [ ] 2.2: Generate confetti/sparkle particles
-  - [ ] 2.3: Animate particles falling/floating
-  - [ ] 2.4: Tier-appropriate colors
-  - [ ] 2.5: Respect prefers-reduced-motion
+- [x] Task 2: Create ParticleSystem Component (AC: #3)
+  - [x] 2.1: Create `src/features/achievements/components/ParticleSystem.tsx`
+  - [x] 2.2: Generate confetti/sparkle particles
+  - [x] 2.3: Animate particles falling/floating
+  - [x] 2.4: Tier-appropriate colors
+  - [x] 2.5: Respect prefers-reduced-motion
 
-- [ ] Task 3: Implement Tier-Based Celebrations (AC: #4)
-  - [ ] 3.1: Map achievement tier to celebration config
-  - [ ] 3.2: Duration: 3s/4s/5s/6s by tier
-  - [ ] 3.3: Particle intensity by tier
-  - [ ] 3.4: Sound cue by tier (prep for Epic 5)
+- [x] Task 3: Implement Tier-Based Celebrations (AC: #4)
+  - [x] 3.1: Map achievement tier to celebration config
+  - [x] 3.2: Duration: 3s/4s/5s/6s by tier
+  - [x] 3.3: Particle intensity by tier
+  - [x] 3.4: Sound cue by tier (prep for Epic 5)
 
-- [ ] Task 4: Handle Dismiss Logic (AC: #5)
-  - [ ] 4.1: "Continue" button dismisses
-  - [ ] 4.2: Auto-dismiss after timeout
-  - [ ] 4.3: Mark achievement as seen
-  - [ ] 4.4: Graceful fade-out animation
+- [x] Task 4: Handle Dismiss Logic (AC: #5)
+  - [x] 4.1: "Continue" button dismisses
+  - [x] 4.2: Auto-dismiss after timeout
+  - [x] 4.3: Mark achievement as seen
+  - [x] 4.4: Graceful fade-out animation
 
-- [ ] Task 5: Queue Multiple Celebrations (AC: #6)
-  - [ ] 5.1: Create celebration queue state
-  - [ ] 5.2: Process queue sequentially
-  - [ ] 5.3: 500ms pause between celebrations
-  - [ ] 5.4: Allow skip/fast-forward
+- [x] Task 5: Queue Multiple Celebrations (AC: #6)
+  - [x] 5.1: Create celebration queue state
+  - [x] 5.2: Process queue sequentially
+  - [x] 5.3: 500ms pause between celebrations
+  - [x] 5.4: Allow skip/fast-forward
 
-- [ ] Task 6: Connect to AchievementUnlocked Event
-  - [ ] 6.1: Listen to event in app root
-  - [ ] 6.2: Add to celebration queue
-  - [ ] 6.3: Trigger overlay display
+- [x] Task 6: Connect to AchievementUnlocked Event
+  - [x] 6.1: Listen to event in app root
+  - [x] 6.2: Add to celebration queue
+  - [x] 6.3: Trigger overlay display
 
-- [ ] Task 7: Testing
-  - [ ] 7.1: Test overlay renders correctly
-  - [ ] 7.2: Test different tier animations
-  - [ ] 7.3: Test queue processing
-  - [ ] 7.4: Test reduced-motion mode
+- [x] Task 7: Testing
+  - [x] 7.1: Test overlay renders correctly
+  - [x] 7.2: Test different tier animations
+  - [x] 7.3: Test queue processing
+  - [x] 7.4: Test reduced-motion mode
 
 ## Dev Notes
 
@@ -185,10 +185,40 @@ if (prefersReducedMotion) {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4 (Sisyphus Agent)
 
 ### Debug Log References
 
+N/A - Implementation completed without blocking issues.
+
 ### Completion Notes List
 
+- Implemented full-screen CelebrationOverlay component with tier-based celebrations
+- Created ParticleSystem with 4 particle types: sparkle, confetti, confetti-rain, fireworks
+- Implemented SimpleCelebration fallback for users with prefers-reduced-motion
+- Auto-dismiss uses tier-based durations (3s/4s/5s/6s for bronze/silver/gold/platinum)
+- Queue processing with 500ms delay between sequential celebrations
+- User can click "Continue" or overlay background to dismiss early
+- Achievement marked as viewed via markAchievementViewed() when dismissed
+- App.tsx updated to listen for "achievement-unlocked" Tauri events
+- Accessibility: dialog role, aria-modal, aria-labelledby attributes
+- 54 new tests covering overlay rendering, dismiss behavior, auto-dismiss timing, queue processing, accessibility, and styling
+- All 450 tests pass (396 existing + 54 new)
+
 ### File List
+
+**Created:**
+- src/features/achievements/components/CelebrationOverlay.tsx
+- src/features/achievements/components/ParticleSystem.tsx
+- src/features/achievements/components/SimpleCelebration.tsx
+- src/features/achievements/components/CelebrationOverlay.test.tsx
+- src/features/achievements/components/ParticleSystem.test.tsx
+- src/features/achievements/components/SimpleCelebration.test.tsx
+
+**Modified:**
+- src/features/achievements/components/index.ts (added exports)
+- src/App.tsx (added CelebrationOverlay and achievement-unlocked event listener)
+
+## Change Log
+
+- 2026-01-30: Implemented Story 4.6 - Full-screen celebration overlay with particle system, tier-based animations, queue processing, reduced-motion support, and comprehensive test coverage.
