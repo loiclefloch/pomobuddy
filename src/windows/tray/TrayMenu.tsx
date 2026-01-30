@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { TimerRing } from "@/features/timer/components/TimerRing";
 import { ActionButton } from "@/features/timer/components/ActionButton";
 import { QuickStats } from "@/features/stats/components/QuickStats";
 import { useQuickStats } from "@/features/stats/hooks/useQuickStats";
+import { CharacterSprite, useCharacterStore } from "@/features/character";
+import type { CharacterState } from "@/features/character";
 import { TrayMenuItems } from "./components/TrayMenuItems";
 import {
   openMainWindow,
@@ -25,11 +27,56 @@ interface TimerTickPayload {
 
 const FOCUS_DURATION = 1500;
 const BREAK_DURATION = 300;
+const CELEBRATION_DURATION_MS = 2500;
+
+function mapStatusToCharacterState(
+  status: TimerState["status"],
+  isCelebrating: boolean
+): CharacterState {
+  if (isCelebrating) return "celebrate";
+  switch (status) {
+    case "focus":
+      return "focus";
+    case "break":
+      return "break";
+    default:
+      return "idle";
+  }
+}
 
 export default function TrayMenu() {
   const [status, setStatus] = useState<TimerState["status"]>("idle");
   const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [isCelebrating, setIsCelebrating] = useState(false);
+  const previousStatus = useRef<TimerState["status"]>("idle");
+  const celebrationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { currentStreak, todaySessions, todayFocusMinutes } = useQuickStats();
+  const selectedCharacter = useCharacterStore((state) => state.selectedCharacter);
+
+  useEffect(() => {
+    const wasInFocus = previousStatus.current === "focus";
+    const isNowBreak = status === "break";
+    
+    if (wasInFocus && isNowBreak) {
+      if (celebrationTimeout.current) {
+        clearTimeout(celebrationTimeout.current);
+      }
+      setIsCelebrating(true);
+      celebrationTimeout.current = setTimeout(() => {
+        setIsCelebrating(false);
+      }, CELEBRATION_DURATION_MS);
+    }
+    
+    previousStatus.current = status;
+  }, [status]);
+
+  useEffect(() => {
+    return () => {
+      if (celebrationTimeout.current) {
+        clearTimeout(celebrationTimeout.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     invoke<{ status: string; remaining_seconds: number }>("get_timer_state")
@@ -83,13 +130,24 @@ export default function TrayMenu() {
       ? 0
       : ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
 
+  const characterState = mapStatusToCharacterState(status, isCelebrating);
+
   return (
     <div className="bg-cozy-bg min-h-screen p-5 flex flex-col items-center gap-4">
-      <TimerRing
-        progress={progress}
-        status={status}
-        remainingSeconds={remainingSeconds}
-      />
+      <div className="relative">
+        <TimerRing
+          progress={progress}
+          status={status}
+          remainingSeconds={remainingSeconds}
+        />
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
+          <CharacterSprite
+            character={selectedCharacter}
+            state={characterState}
+            size="sm"
+          />
+        </div>
+      </div>
 
       <div className="w-full h-px bg-cozy-border" />
 

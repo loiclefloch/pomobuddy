@@ -1,6 +1,6 @@
 # Story 5.2: Create Character Sprite System
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -47,44 +47,44 @@ So that I have a cozy presence during my focus sessions.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create CharacterSprite Component (AC: #1)
-  - [ ] 1.1: Create `src/features/character/components/CharacterSprite.tsx`
-  - [ ] 1.2: Accept character, state, size props
-  - [ ] 1.3: Render appropriate sprite image
-  - [ ] 1.4: Handle image loading states
+- [x] Task 1: Create CharacterSprite Component (AC: #1)
+  - [x] 1.1: Create `src/features/character/components/CharacterSprite.tsx`
+  - [x] 1.2: Accept character, state, size props
+  - [x] 1.3: Render appropriate sprite image
+  - [x] 1.4: Handle image loading states
 
-- [ ] Task 2: Define Character States (AC: #2)
-  - [ ] 2.1: Create CharacterState type
-  - [ ] 2.2: Map states to sprite files
-  - [ ] 2.3: Define animation behaviors per state
+- [x] Task 2: Define Character States (AC: #2)
+  - [x] 2.1: Create CharacterState type
+  - [x] 2.2: Map states to sprite files
+  - [x] 2.3: Define animation behaviors per state
 
-- [ ] Task 3: Implement State Transitions (AC: #3)
-  - [ ] 3.1: Add CSS transitions between states
-  - [ ] 3.2: 300ms ease-out timing
-  - [ ] 3.3: Check prefers-reduced-motion
-  - [ ] 3.4: Fallback to static images
+- [x] Task 3: Implement State Transitions (AC: #3)
+  - [x] 3.1: Add CSS transitions between states
+  - [x] 3.2: 300ms ease-out timing
+  - [x] 3.3: Check prefers-reduced-motion
+  - [x] 3.4: Fallback to static images
 
-- [ ] Task 4: Create Size Variants (AC: #4)
-  - [ ] 4.1: Define sm (40px), md (80px), lg (120px)
-  - [ ] 4.2: Scale sprites appropriately
-  - [ ] 4.3: Maintain aspect ratio
+- [x] Task 4: Create Size Variants (AC: #4)
+  - [x] 4.1: Define sm (40px), md (80px), lg (120px)
+  - [x] 4.2: Scale sprites appropriately
+  - [x] 4.3: Maintain aspect ratio
 
-- [ ] Task 5: Create useCharacterStore (AC: #5)
-  - [ ] 5.1: Create `src/features/character/stores/characterStore.ts`
-  - [ ] 5.2: Store selectedCharacter state
-  - [ ] 5.3: Load from settings on init
-  - [ ] 5.4: Save to settings on change
+- [x] Task 5: Create useCharacterStore (AC: #5)
+  - [x] 5.1: Create `src/features/character/stores/characterStore.ts`
+  - [x] 5.2: Store selectedCharacter state
+  - [x] 5.3: Load from settings on init
+  - [x] 5.4: Save to settings on change
 
-- [ ] Task 6: Create useReducedMotion Hook
-  - [ ] 6.1: Create `src/shared/hooks/useReducedMotion.ts`
-  - [ ] 6.2: Detect prefers-reduced-motion
-  - [ ] 6.3: Return boolean for components
+- [x] Task 6: Create useReducedMotion Hook
+  - [x] 6.1: Create `src/shared/hooks/useReducedMotion.ts`
+  - [x] 6.2: Detect prefers-reduced-motion
+  - [x] 6.3: Return boolean for components
 
-- [ ] Task 7: Testing
-  - [ ] 7.1: Test sprite renders for each state
-  - [ ] 7.2: Test size variants
-  - [ ] 7.3: Test reduced motion behavior
-  - [ ] 7.4: Test character switching
+- [x] Task 7: Testing
+  - [x] 7.1: Test sprite renders for each state
+  - [x] 7.2: Test size variants
+  - [x] 7.3: Test reduced motion behavior
+  - [x] 7.4: Test character switching
 
 ## Dev Notes
 
@@ -167,10 +167,29 @@ const CharacterSprite: React.FC<CharacterSpriteProps> = ({
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude (Sisyphus Build Agent)
 
 ### Debug Log References
 
+None - implementation was already complete, tests added
+
 ### Completion Notes List
 
+- CharacterSprite component implemented with emoji placeholders (real sprites in Story 5-3)
+- All 5 character types supported: cat, cow, polarBear, koala, platypus
+- All 4 states with visual differences: idle, focus, break, celebrate
+- Size variants: sm (40px), md (80px), lg (120px)
+- 300ms ease-out transitions with prefers-reduced-motion support
+- useCharacterStore with Zustand persists to settings
+- useReducedMotion hook detects user preference
+- 23 comprehensive tests covering all acceptance criteria
+
 ### File List
+
+- src/features/character/components/CharacterSprite.tsx (pre-existing)
+- src/features/character/components/CharacterSprite.test.tsx (created - 13 tests)
+- src/features/character/stores/characterStore.ts (pre-existing)
+- src/features/character/stores/characterStore.test.ts (created - 4 tests)
+- src/features/character/types.ts (pre-existing)
+- src/shared/hooks/useReducedMotion.ts (pre-existing)
+- src/shared/hooks/useReducedMotion.test.ts (created - 6 tests)

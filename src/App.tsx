@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
 import { Coffee, Trophy, ArrowLeft } from "lucide-react";
 import { listen } from "@tauri-apps/api/event";
-import { TimerDisplay, TimerControls, useTimer } from "@/features/timer";
+import { TimerDisplay, TimerControls, useTimer, useTimerAudio } from "@/features/timer";
 import { TodayStats, SessionHistoryContainer, WeeklyBarChart } from "@/features/stats/components";
 import { StreakCard, AchievementGallery, CelebrationOverlay } from "@/features/achievements/components";
 import { useStreak, useAchievements } from "@/features/achievements/hooks";
 import { useAchievementStore, type AchievementUnlockedPayload } from "@/features/achievements/stores/achievementStore";
+import { CharacterSprite, useCharacter } from "@/features/character";
 
 type AppView = "timer" | "achievements";
 
 function TimerView() {
   const { start, pause, resume, stop } = useTimer();
   const { currentStreak, longestStreak, isMilestone } = useStreak();
+  const { character, state: characterState } = useCharacter();
+  useTimerAudio();
 
   return (
     <>
       <div className="flex flex-col items-center gap-8">
+        <CharacterSprite character={character} state={characterState} size="lg" />
         <TimerDisplay />
         <TimerControls
           onStart={start}

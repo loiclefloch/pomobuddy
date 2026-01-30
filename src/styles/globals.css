@@ -58,3 +58,21 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.character-idle {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.character-celebrate {
+  animation: gentle-bounce 0.5s ease-in-out infinite;
+}

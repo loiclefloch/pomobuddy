@@ -54,11 +54,15 @@ export function useTimer() {
   }, []);
 
   const pause = useCallback(async () => {
-    await invoke("pause_timer");
+    const state = await invoke<TimerState>("pause_timer");
+    useTimerStore.getState().setStatus(state.status);
+    useTimerStore.getState().setRemainingSeconds(state.remainingSeconds);
   }, []);
 
   const resume = useCallback(async () => {
-    await invoke("resume_timer");
+    const state = await invoke<TimerState>("resume_timer");
+    useTimerStore.getState().setStatus(state.status);
+    useTimerStore.getState().setRemainingSeconds(state.remainingSeconds);
   }, []);
 
   const stop = useCallback(async () => {

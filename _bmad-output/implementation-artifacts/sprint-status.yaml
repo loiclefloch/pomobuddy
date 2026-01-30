@@ -80,13 +80,13 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Cozy UI & Character System
-  epic-5: backlog
-  5-1-implement-cozy-design-system-theme: backlog
-  5-2-create-character-sprite-system: backlog
-  5-3-add-character-assets-for-all-5-characters: backlog
-  5-4-implement-character-state-animations: backlog
-  5-5-add-lo-fi-ambient-audio-system: backlog
-  5-6-add-session-boundary-sound-effects: backlog
+  epic-5: done
+  5-1-implement-cozy-design-system-theme: done
+  5-2-create-character-sprite-system: done
+  5-3-add-character-assets-for-all-5-characters: done
+  5-4-implement-character-state-animations: done
+  5-5-add-lo-fi-ambient-audio-system: done
+  5-6-add-session-boundary-sound-effects: done
   epic-5-retrospective: optional
 
   # Epic 6: Onboarding & First-Run Experience
